@@ -51,10 +51,12 @@ const roleAccentMap: Record<string, { color: string; glow: string; badgeClass: s
 function InfoSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{
-      background: '#161616',
-      border: '1px solid rgba(255,255,255,0.07)',
-      borderRadius: 16,
-      padding: '28px 32px',
+      background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+      backdropFilter: 'blur(20px)',
+      border: '1px solid rgba(255,255,255,0.06)',
+      boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)',
+      borderRadius: 32,
+      padding: '36px 40px',
     }}>
       <h2 style={{
         color: 'rgba(255,255,255,0.40)',
@@ -62,7 +64,7 @@ function InfoSection({ title, children }: { title: string; children: React.React
         fontWeight: 700,
         letterSpacing: '0.08em',
         textTransform: 'uppercase',
-        marginBottom: 18,
+        marginBottom: 20,
       }}>
         {title}
       </h2>
@@ -133,13 +135,10 @@ export default async function MemberProfilePage({ params }: Props) {
 
         <div className="container-main">
 
-          {/* Absolute Back Button inside Cover Banner */}
-          <div style={{ position: 'relative', height: 0 }}>
+          {/* Back Button positioned elegantly above the profile card */}
+          <div style={{ marginTop: -120, marginBottom: 80 }}>
             <Link href="/" style={{
-              position: 'absolute',
-              top: -90, // Positioned nicely inside 180px banner, completely out of avatar way
-              left: 0,
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
               gap: 8,
               padding: '8px 16px',
@@ -152,7 +151,6 @@ export default async function MemberProfilePage({ params }: Props) {
               fontSize: 13,
               fontWeight: 600,
               textDecoration: 'none',
-              zIndex: 20,
               transition: 'all 0.2s ease',
             }} className="hover-bg hover-text">
               <ArrowLeft size={14} /> Back to Directory
@@ -162,12 +160,13 @@ export default async function MemberProfilePage({ params }: Props) {
           {/* ── Main Profile Header Card ─────────────────────────────── */}
           <div style={{ marginBottom: 32, position: 'relative' }}>
             <div style={{
-              background: '#141414',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: 20,
-              padding: '36px',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05), 0 8px 48px rgba(0,0,0,0.5)',
+              borderRadius: 32,
+              padding: '40px',
               position: 'relative',
-              boxShadow: '0 8px 48px rgba(0,0,0,0.7)',
             }}>
               <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
                 
@@ -198,6 +197,7 @@ export default async function MemberProfilePage({ params }: Props) {
                       src={member.profileImage || '/uploads/default-avatar.png'}
                       alt={name}
                       fill
+                      priority
                       sizes="(max-width: 768px) 100vw, 140px"
                       className="object-cover"
                       style={{ objectFit: 'cover', objectPosition: 'top center' }}
@@ -237,16 +237,14 @@ export default async function MemberProfilePage({ params }: Props) {
                       fontSize: 13,
                       fontWeight: 500,
                       letterSpacing: '-0.01em',
-                      marginBottom: 16,
+                      marginBottom: 24,
                     }}>
                       {member.category.name}
                     </span>
                   )}
 
-                  {/* Tagline removed from here to prevent duplicate about info */}
-
                   {/* Divider */}
-                  <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '24px 0' }} />
+                  <div style={{ height: 1, background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%)', margin: '24px 0' }} />
 
                   {/* Action pills row */}
                   <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -286,13 +284,13 @@ export default async function MemberProfilePage({ params }: Props) {
                   </div>
                 </div>
 
-                {/* QR Card Share & Connect (Moved inside Member Info Header Card) */}
+                {/* QR Card Share & Connect (Right Aligned in Desktop) */}
                 <div style={{
                   flexShrink: 0,
                   width: '100%',
-                  maxWidth: 320,
-                  minWidth: 280,
-                  margin: '0 auto',
+                  maxWidth: 540,
+                  minWidth: 320,
+                  marginLeft: 'auto',
                 }}>
                   <QRCard
                     profileUrl={`${process.env.NEXT_PUBLIC_APP_URL || 'https://krypton.bni-nagpur.in'}/members/${member.slug}`}
@@ -301,20 +299,29 @@ export default async function MemberProfilePage({ params }: Props) {
                   />
                 </div>
 
+
               </div>
             </div>
           </div>
 
           {/* ── Stacked Profile Content (Single Column Layout) ── */}
-          <div className="flex flex-col gap-6 max-w-4xl mx-auto pb-20">
+          <div className="flex flex-col gap-6 w-full pb-20">
 
             {/* About Member & Contact Details Side-by-Side Grid */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: member.fullDescription ? 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))' : '1fr',
-              gap: 24,
-              width: '100%',
-            }}>
+            <div className="profile-bento-bottom">
+              <style>{`
+                .profile-bento-bottom {
+                  display: grid;
+                  grid-template-columns: 1fr;
+                  gap: 24px;
+                  width: 100%;
+                }
+                @media (min-width: 900px) {
+                  .profile-bento-bottom {
+                    grid-template-columns: ${member.fullDescription ? '6.5fr 3.5fr' : '1fr'};
+                  }
+                }
+              `}</style>
               {member.fullDescription && (
                 <InfoSection title="About Member">
                   <p style={{ color: 'rgba(255,255,255,0.70)', lineHeight: 1.8, fontSize: 15, whiteSpace: 'pre-line' }}>
@@ -367,11 +374,13 @@ export default async function MemberProfilePage({ params }: Props) {
 
             {member.referralExpectation && (
               <div style={{
-                background: '#161616',
-                border: '1px solid rgba(255,255,255,0.07)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.06)',
                 borderLeft: `4px solid ${accent.color}`,
-                borderRadius: 16,
-                padding: '28px 32px',
+                boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)',
+                borderRadius: 32,
+                padding: '36px 40px',
               }}>
                 <h2 style={{
                   color: 'rgba(255,255,255,0.40)', fontSize: 12, fontWeight: 700,

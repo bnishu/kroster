@@ -144,7 +144,10 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
   const clearFilters = () => { setSearchQuery(''); setSelectedCategory(null) }
 
   return (
-    <div style={{ background: '#0A0A0A', minHeight: '100vh' }}>
+    <div style={{
+      background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(182,31,43,0.05) 0%, #0A0A0A 100%)',
+      minHeight: '100vh'
+    }}>
       <HeroSection onSearch={setSearchQuery} />
 
       <StickySearchBar
@@ -161,7 +164,9 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
         {/* ── Head Table ── */}
         <AnimatePresence mode="popLayout">
           {fHead.length > 0 && (
-            <motion.section key="headtable" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: 80 }}>
+            <motion.section key="headtable" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} 
+              style={{ marginBottom: 40, background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%)', borderRadius: 32, padding: '40px 32px', border: '1px solid rgba(255,255,255,0.04)', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)' }}
+            >
               <SectionHeader icon={Star} title="Chapter Leadership" subtitle="Head Table" color="#818cf8" count={fHead.length} />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-6">
                 <AnimatePresence mode="popLayout">
@@ -179,7 +184,9 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
         {/* ── All Members ── */}
         <AnimatePresence mode="popLayout">
           {fMembers.length > 0 && (
-            <motion.section key="members" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: 80 }}>
+            <motion.section key="members" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
+              style={{ marginBottom: 40, background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%)', borderRadius: 32, padding: '40px 32px', border: '1px solid rgba(255,255,255,0.04)', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)' }}
+            >
               <SectionHeader icon={Users} title="Active Professionals" subtitle="Chapter Members" color="#38bdf8" count={fMembers.length} />
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full mt-6">
                 <AnimatePresence mode="popLayout">
@@ -197,7 +204,9 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
         {/* ── Support ── */}
         <AnimatePresence mode="popLayout">
           {fSupport.length > 0 && (
-            <motion.section key="support" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: 80 }}>
+            <motion.section key="support" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
+              style={{ marginBottom: 40, background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%)', borderRadius: 32, padding: '40px 32px', border: '1px solid rgba(255,255,255,0.04)', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)' }}
+            >
               <SectionHeader icon={Shield} title="Support Team" subtitle="Chapter Support" color="#E85464" count={fSupport.length} />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-6 justify-center">
                 <AnimatePresence mode="popLayout">
@@ -215,7 +224,9 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
         {/* ── EDs ── */}
         <AnimatePresence mode="popLayout">
           {fEDs.length > 0 && (
-            <motion.section key="eds" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <motion.section key="eds" layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
+              style={{ marginBottom: 40, background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%)', borderRadius: 32, padding: '40px 32px', border: '1px solid rgba(255,255,255,0.04)', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)' }}
+            >
               <SectionHeader icon={Crown} title="Executive Directors" subtitle="Leadership Team" color="#D4AF37" count={fEDs.length} />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full mt-6 justify-center">
                 <AnimatePresence mode="popLayout">
