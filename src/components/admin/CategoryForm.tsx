@@ -12,6 +12,7 @@ import { createCategory, updateCategory } from '@/app/admin/actions'
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
+  isVacant: z.boolean().optional(),
 })
 
 type FormData = z.infer<typeof schema>
@@ -22,7 +23,11 @@ export function CategoryForm({ initialData }: { initialData?: any }) {
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: initialData || { name: '', description: '' },
+    defaultValues: initialData ? {
+      name: initialData.name,
+      description: initialData.description || '',
+      isVacant: !!initialData.isVacant,
+    } : { name: '', description: '', isVacant: false },
   })
 
   const onSubmit = async (data: FormData) => {
@@ -62,6 +67,21 @@ export function CategoryForm({ initialData }: { initialData?: any }) {
             rows={4}
             className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-[#B61F2B]"
           />
+        </div>
+
+        <div className="flex items-center gap-2 pt-2">
+          <input
+            type="checkbox"
+            id="isVacant"
+            {...register('isVacant')}
+            style={{
+              width: 16, height: 16, borderRadius: 4, cursor: 'pointer',
+              backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
+            }}
+          />
+          <label htmlFor="isVacant" className="text-sm font-medium text-white/80 cursor-pointer select-none">
+            Mark as Vacant Category (No active members, shown in vacant marquee)
+          </label>
         </div>
       </div>
 

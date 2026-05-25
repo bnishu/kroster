@@ -1,15 +1,112 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, LogIn, LayoutDashboard } from 'lucide-react'
+import { Menu, X, LogIn, LayoutDashboard, Search } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/#members', label: 'Members' },
   { href: '/#events', label: 'Events' },
 ]
+
+function NavbarSearch({ mobile }: { mobile?: boolean }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const currentQuery = searchParams ? searchParams.get('q') || '' : ''
+  const [searchVal, setSearchVal] = useState(currentQuery)
+
+  useEffect(() => {
+    setSearchVal(currentQuery)
+  }, [currentQuery])
+
+  const handleSearchChange = (val: string) => {
+    setSearchVal(val)
+    if (val.trim()) {
+      router.push(`/?q=${encodeURIComponent(val)}`)
+    } else {
+      router.push('/')
+    }
+  }
+
+  if (mobile) {
+    return (
+      <div style={{ position: 'relative', marginBottom: 20 }}>
+        <Search size={16} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+        <input
+          type="search"
+          value={searchVal}
+          onChange={e => handleSearchChange(e.target.value)}
+          placeholder="Search members..."
+          style={{
+            width: '100%',
+            height: 44,
+            backgroundColor: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: 12,
+            padding: '0 16px 0 42px',
+            color: '#fff',
+            fontSize: 14,
+            outline: 'none',
+            transition: 'all 0.2s',
+          }}
+          className="focus:border-[#B61F2B]"
+        />
+        {searchVal && (
+          <button 
+            onClick={() => handleSearchChange('')} 
+            style={{
+              position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
+              background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)',
+              display: 'flex', padding: 2
+            }}
+          >
+            <X size={14} />
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="desktop-search" style={{ position: 'relative', display: 'none', alignItems: 'center', width: 280 }}>
+      <Search size={15} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+      <input
+        type="search"
+        value={searchVal}
+        onChange={e => handleSearchChange(e.target.value)}
+        placeholder="Search members..."
+        style={{
+          width: '100%',
+          height: 36,
+          backgroundColor: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 10,
+          padding: '0 12px 0 36px',
+          color: '#fff',
+          fontSize: 13,
+          outline: 'none',
+          transition: 'all 0.2s',
+        }}
+        className="focus:border-[#B61F2B] focus:bg-white/[0.07]"
+      />
+      {searchVal && (
+        <button 
+          onClick={() => handleSearchChange('')} 
+          style={{
+            position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
+            background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)',
+            display: 'flex', padding: 2
+          }}
+        >
+          <X size={12} />
+        </button>
+      )}
+    </div>
+  )
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -78,6 +175,15 @@ export function Navbar() {
               <div style={{ color: 'rgba(255,255,255,0.28)', fontSize: 10, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 1 }}>Nagpur Chapter</div>
             </div>
           </Link>
+ 
+          {/* Desktop Search Bar wrapped in Suspense */}
+          <Suspense fallback={
+            <div className="desktop-search" style={{ position: 'relative', display: 'none', alignItems: 'center', width: 280 }}>
+              <div style={{ width: '100%', height: 36, backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10 }} />
+            </div>
+          }>
+            <NavbarSearch />
+          </Suspense>
 
           {/* Desktop Nav */}
           <nav className="desktop-nav" style={{ display: 'none', alignItems: 'center', gap: 2 }}>
@@ -198,6 +304,14 @@ export function Navbar() {
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              {/* Mobile Search input wrapped in Suspense */}
+              <Suspense fallback={
+                <div style={{ position: 'relative', marginBottom: 20 }}>
+                  <div style={{ width: '100%', height: 44, backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
+                </div>
+              }>
+                <NavbarSearch mobile />
+              </Suspense>
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
@@ -260,6 +374,7 @@ export function Navbar() {
         @media (min-width: 768px) {
           .desktop-nav { display: flex !important; }
           .desktop-actions { display: flex !important; }
+          .desktop-search { display: flex !important; }
           .mobile-toggle { display: none !important; }
         }
       `}</style>

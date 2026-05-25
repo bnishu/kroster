@@ -76,6 +76,7 @@ async function main() {
   await prisma.testimonial.deleteMany({})
   await prisma.member.deleteMany({})
   await prisma.category.deleteMany({})
+  await prisma.event.deleteMany({})
 
   // Step 1: Read the excel sheet
   const excelPath = path.join(process.cwd(), 'GOOGLE FORM FOR ROSTER.xlsx')
@@ -170,13 +171,55 @@ async function main() {
   const categoriesSet = new Set<string>()
   excelData.forEach((row) => {
     if (row['CATEGORY ( AS PER BNI)']) {
-      categoriesSet.add(String(row['CATEGORY ( AS PER BNI)']).trim())
+      const cat = String(row['CATEGORY ( AS PER BNI)']).trim()
+      if (cat.toLowerCase() !== 'sneha') {
+        categoriesSet.add(cat)
+      }
     }
   })
   // Add manual categories
-  manualMembers.forEach((m) => categoriesSet.add(m.categoryName))
+  manualMembers.forEach((m) => {
+    if (m.categoryName.toLowerCase() !== 'sneha') {
+      categoriesSet.add(m.categoryName)
+    }
+  })
 
   console.log(`Identified ${categoriesSet.size} unique categories. Seeding them...`)
+
+  const VACANT_CATEGORIES = [
+    'Architect – Commercial',
+    'Architect – Residential',
+    'Architect – Landscape',
+    'PEB Shed',
+    'HVAC Consultant',
+    'Civil Lawyer',
+    'CCTV & Security Systems',
+    'Housekeeping Services',
+    'Water Purifier Dealer',
+    'Cold Storage',
+    'Car Accessories Dealer',
+    'Tyre Dealer',
+    'Taxi Services',
+    'Courier & Logistics',
+    'Gynaecologist',
+    'Heart Surgeon / Cardiologist',
+    'Pediatrician',
+    'Nutritionist',
+    'Gym Owner',
+    'Baker',
+    'Banquet',
+    'Event Planner – Wedding & Personal Events',
+    'Café Shop',
+    'Perfumes',
+    'Graphic Designer',
+    'Printing Services',
+    'Company Secretary',
+    'Manpower Consultant',
+    'Grocery Merchant',
+    'Mobile Retailer',
+    'Stationery Supplier',
+    'White Goods Dealer'
+  ]
 
   // Step 3: Seed Categories
   const categoryIdMap: Record<string, string> = {}
@@ -184,16 +227,35 @@ async function main() {
     const slug = slugify(catName)
     const category = await prisma.category.upsert({
       where: { slug },
-      update: { name: catName },
+      update: { name: catName, isVacant: false },
       create: {
         name: catName,
         slug,
         icon: catName.slice(0, 3).toUpperCase(),
         color: '#B61F2B',
+        isVacant: false,
       },
     })
     categoryIdMap[catName] = category.id
   }
+
+  console.log('Seeding vacant categories...')
+  for (const catName of VACANT_CATEGORIES) {
+    const slug = slugify(catName)
+    const category = await prisma.category.upsert({
+      where: { slug },
+      update: { name: catName, isVacant: true },
+      create: {
+        name: catName,
+        slug,
+        icon: catName.slice(0, 3).toUpperCase(),
+        color: '#B61F2B',
+        isVacant: true,
+      },
+    })
+    categoryIdMap[catName] = category.id
+  }
+
   console.log('Categories seeded successfully!')
 
   // Step 4: Seed manual members (EDs and Supports)
@@ -336,11 +398,51 @@ async function main() {
       isPublished: true,
     },
     {
-      title: 'BNI Krypton Mega Visitor Day',
-      slug: 'mega-visitor-day-june-2026',
-      description: 'Special chapter networking event featuring 60+ business categories. Expand your local connections, showcase your enterprise, and witness BNI Krypton\'s referral power in action.',
-      eventDate: new Date('2026-06-18T08:00:00'),
-      location: 'M2 Square, Sadar, Nagpur',
+      title: '🎤 BizTalk Show — BNI Krypton Tuesday Meeting',
+      slug: 'biztalk-show-may-2026',
+      description: 'An extraordinary networking experience! BNI Krypton presents the high-impact BizTalk Show. We are honored to host our prominent special guest speakers:\n\n' +
+        '• Mr. Dilip Kamdar\n' +
+        '• Mr. Mithilesh Wazalwar\n\n' +
+        'Gain exclusive business insights, witness professional keynote showcases, and network with Nagpur\'s premier business network.',
+      eventDate: new Date('2026-05-26T07:30:00'),
+      location: 'Hotel Centre Point, Ramdaspeth, Nagpur',
+      isPublished: true,
+    },
+    {
+      title: '🏆 300th Landmark Weekly Meeting — BNI Krypton',
+      slug: '300th-milestone-meeting',
+      description: 'A momentous milestone! Celebrate our 300th weekly chapter meeting of BNI Krypton. Witness premium networking, special leadership keynotes, and massive business opportunities with Nagpur\'s leading business network.',
+      eventDate: new Date('2026-06-02T07:30:00'),
+      location: 'Hotel Centre Point, Ramdaspeth, Nagpur',
+      isPublished: true,
+    },
+    {
+      title: 'Weekly Business Conclave — BNI Krypton',
+      slug: 'weekly-meeting-2026-06-09',
+      description: 'Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.',
+      eventDate: new Date('2026-06-09T07:30:00'),
+      location: 'Hotel Centre Point, Ramdaspeth, Nagpur',
+      isPublished: true,
+    },
+    {
+      title: '🚀 Focus Visitors Day (FVD) — BNI Krypton',
+      slug: 'focus-visitors-day-2026',
+      description: 'Grow your business exponentially! BNI Krypton is hosting its mega Focus Visitors Day. A high-energy referral day custom-tailored for selected key industries to showcase and connect. Special invitations for:\n\n' + 
+        '• Real Estate: Architects (Commercial/Residential/Landscape), PEB Shed, HVAC Consultant, Civil Lawyers, CCTV, Housekeeping, Water Purifiers\n' +
+        '• Automobile & Transport: Tyre/Accessories Dealers, Taxi Services, Logistics\n' +
+        '• Health & Wellness: Gynaecologists, Cardiologists, Pediatricians, Nutritionists, Gym Owners\n' +
+        '• Events & Lifestyle: Bakers, Banquets, Wedding/Event Planners, Cafés, Graphic Designers, Printing\n' +
+        '• Business Services: Company Secretaries, Manpower Consultants, Grocery Merchants, Stationery, White Goods Dealers.',
+      eventDate: new Date('2026-06-16T07:30:00'),
+      location: 'Hotel Centre Point, Ramdaspeth, Nagpur',
+      isPublished: true,
+    },
+    {
+      title: 'Weekly Business Conclave — BNI Krypton',
+      slug: 'weekly-meeting-2026-06-23',
+      description: 'Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.',
+      eventDate: new Date('2026-06-23T07:30:00'),
+      location: 'Hotel Centre Point, Ramdaspeth, Nagpur',
       isPublished: true,
     },
   ]

@@ -449,7 +449,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 12px;
+  margin-top: 6px;
   opacity: 1 !important;
   transform: none !important;
 }

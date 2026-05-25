@@ -47,28 +47,44 @@ export default async function EventsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {events.map((event) => (
                 <div key={event.id} className="glass rounded-3xl overflow-hidden border border-white/10 group flex flex-col hover:border-white/20 transition-colors">
-                  <div className="relative h-48 w-full bg-white/5 overflow-hidden">
-                    {event.image ? (
+                  {event.image ? (
+                    <div className="relative h-48 w-full bg-white/5 overflow-hidden">
                       <Image
                         src={event.image}
                         alt={event.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#B61F2B]/20 to-[#7A111B]/10">
-                        <Calendar className="w-12 h-12 text-white/20" />
-                      </div>
-                    )}
-                    <div className="absolute top-4 left-4">
-                      <div className="glass px-3 py-1.5 rounded-lg text-xs font-semibold text-white backdrop-blur-md border border-white/20 flex flex-col items-center justify-center min-w-[50px]">
-                        <span className="text-[#B61F2B] text-lg leading-none">{event.eventDate.getDate()}</span>
-                        <span className="uppercase text-[10px] mt-0.5">{event.eventDate.toLocaleString('en-US', { month: 'short' })}</span>
+                      <div className="absolute top-4 left-4">
+                        <div className="glass px-3 py-1.5 rounded-lg text-xs font-semibold text-white backdrop-blur-md border border-white/20 flex flex-col items-center justify-center min-w-[50px]">
+                          <span className="text-[#B61F2B] text-lg leading-none">{event.eventDate.getDate()}</span>
+                          <span className="uppercase text-[10px] mt-0.5">{event.eventDate.toLocaleString('en-US', { month: 'short' })}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : null}
                   
                   <div className="p-6 flex flex-col flex-1">
+                    {!event.image && (
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 14 }}>
+                        <div style={{
+                          background: 'rgba(255, 255, 255, 0.04)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: 8,
+                          padding: '4px 10px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                        }}>
+                          <span style={{ color: '#B61F2B', fontWeight: 800, fontSize: 13 }}>
+                            {event.eventDate.getDate()}
+                          </span>
+                          <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 9, fontWeight: 700, textTransform: 'uppercase' }}>
+                            {event.eventDate.toLocaleString('en-US', { month: 'short' })}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                     <h3 className="text-xl font-bold text-white mb-2 font-['Playfair_Display'] group-hover:text-[#D4AF37] transition-colors">{event.title}</h3>
                     
                     <div className="space-y-2 mb-6">

@@ -40,60 +40,139 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 animated-gradient" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#B61F2B]/8 blur-[100px]" />
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#090909',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px 16px',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Background gradients */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse 70% 60% at 50% -10%, rgba(182,31,43,0.12) 0%, rgba(212,175,55,0.02) 50%, #090909 100%)',
+          zIndex: 1,
+        }}
+      />
+      <div 
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 450,
+          height: 450,
+          borderRadius: '50%',
+          backgroundColor: 'rgba(212,175,55,0.06)',
+          filter: 'blur(100px)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative w-full max-w-md"
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          width: '100%',
+          maxWidth: 420,
+        }}
       >
         {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#B61F2B] to-[#7A111B] flex items-center justify-center shadow-xl">
-              <span className="text-white font-bold">BNI</span>
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 12,
+              background: 'linear-gradient(135deg, #B61F2B 0%, #6e0f19 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 14px rgba(182,31,43,0.4)',
+              position: 'relative',
+            }}>
+              <span style={{ color: '#fff', fontWeight: 900, fontSize: 13, fontFamily: '"Playfair Display", serif' }}>BNI</span>
+              <div style={{
+                position: 'absolute', top: -2, right: -2,
+                width: 8, height: 8, borderRadius: '50%',
+                background: '#D4AF37', border: '2px solid #090909',
+              }} />
             </div>
-            <div className="text-left">
-              <div className="font-bold text-white text-lg">BNI Krypton</div>
-              <div className="text-white/40 text-xs">Member Portal</div>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontWeight: 800, color: '#FFFFFF', fontSize: 16, lineHeight: 1.2 }}>BNI Krypton</div>
+              <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, letterSpacing: '0.04em', textTransform: 'uppercase', marginTop: 1 }}>Member Portal</div>
             </div>
           </Link>
         </div>
 
         {/* Card */}
-        <div className="glass-gold rounded-3xl p-10 border border-amber-500/20 shadow-2xl glow-gold relative overflow-hidden">
-          {/* Subtle light shimmer/gradient inside card */}
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/[0.04] via-transparent to-transparent pointer-events-none" />
+        <div 
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            borderRadius: 24,
+            padding: 40,
+            border: '1px solid rgba(212,175,55,0.15)', // Premium gold glow borders
+            boxShadow: '0 24px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.04), 0 0 30px rgba(212,175,55,0.04)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Subtle gold shine overlay */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(135deg, rgba(212,175,55,0.03) 0%, transparent 50%)',
+            pointerEvents: 'none',
+          }} />
 
           {!sent ? (
-            <div className="relative z-10">
-              <h1 className="text-3xl font-extrabold text-white text-center mb-2 font-['Playfair_Display'] tracking-tight">
+            <div style={{ position: 'relative', zIndex: 10 }}>
+              <h1 style={{
+                fontSize: 26,
+                fontWeight: 800,
+                color: '#ffffff',
+                textAlign: 'center',
+                marginBottom: 6,
+                fontFamily: '"Playfair Display", Georgia, serif',
+                letterSpacing: '-0.01em',
+              }}>
                 Welcome Back
               </h1>
-              <p className="text-white/60 text-center text-sm mb-8">
+              <p style={{ color: 'rgba(255,255,255,0.5)', textAlign: 'center', fontSize: 13, marginBottom: 32 }}>
                 Enter your email to receive a secure login link.
               </p>
 
               {error && (
-                <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+                <div style={{
+                  marginBottom: 20,
+                  padding: 12,
+                  borderRadius: 12,
+                  backgroundColor: 'rgba(239,68,68,0.1)',
+                  border: '1px solid rgba(239,68,68,0.2)',
+                  color: '#f87171',
+                  fontSize: 13,
+                  textAlign: 'center',
+                }}>
                   {error}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="relative">
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <div style={{ position: 'relative' }}>
                   <Mail style={{
                     position: 'absolute',
-                    left: '16px',
+                    left: 16,
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    width: '20px',
-                    height: '20px',
-                    color: 'rgba(255, 255, 255, 0.4)',
+                    width: 18,
+                    height: 18,
+                    color: 'rgba(255, 255, 255, 0.35)',
                     pointerEvents: 'none',
                   }} />
                   <input
@@ -105,18 +184,18 @@ export default function LoginPage() {
                     required
                     style={{
                       width: '100%',
-                      height: '52px',
-                      paddingLeft: '48px',
-                      paddingRight: '16px',
-                      borderRadius: '12px',
+                      height: 48,
+                      paddingLeft: 46,
+                      paddingRight: 16,
+                      borderRadius: 12,
                       background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
                       color: '#ffffff',
-                      fontSize: '14px',
+                      fontSize: 14,
                       outline: 'none',
-                      transition: 'all 0.2s ease',
+                      transition: 'all 0.22s ease',
                     }}
-                    className="focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/25 text-white"
+                    className="focus:border-[#B61F2B] focus:bg-white/[0.05] focus:ring-2 focus:ring-[#B61F2B]/15 text-white"
                     aria-label="Email address"
                   />
                 </div>
@@ -126,48 +205,68 @@ export default function LoginPage() {
                   disabled={loading || !email}
                   style={{
                     width: '100%',
-                    height: '52px',
+                    height: 48,
                     background: 'linear-gradient(135deg, #B61F2B 0%, #7A111B 100%)',
                     border: 'none',
-                    borderRadius: '12px',
+                    borderRadius: 12,
                     color: '#ffffff',
                     fontWeight: '700',
-                    fontSize: '15px',
+                    fontSize: 14,
                     cursor: 'pointer',
-                    boxShadow: '0 8px 24px rgba(182, 31, 43, 0.3)',
+                    boxShadow: '0 6px 16px rgba(182, 31, 43, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '8px',
-                    transition: 'all 0.2s ease',
+                    gap: 8,
+                    transition: 'all 0.18s ease',
                   }}
                   className="hover:opacity-90 active:scale-[0.98] disabled:opacity-50"
                 >
                   {loading ? (
-                    <><Loader2 style={{ width: '20px', height: '20px' }} className="animate-spin" /> Sending...</>
+                    <><Loader2 style={{ width: 16, height: 16 }} className="animate-spin" /> Sending...</>
                   ) : (
-                    <>Send Login Link <ArrowRight style={{ width: '16px', height: '16px' }} /></>
+                    <>Send Login Link <ArrowRight style={{ width: 14, height: 14 }} /></>
                   )}
                 </Button>
               </form>
 
-              <p className="text-center text-white/40 text-xs mt-8 font-medium">
+              <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: 11, marginTop: 24, fontWeight: 500 }}>
                 No password needed. We&apos;ll send you a secure link.
               </p>
             </div>
           ) : (
-            <div className="text-center py-6 relative z-10">
-              <div className="w-20 h-20 rounded-3xl bg-green-500/10 border border-green-500/25 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-950/20">
-                <Mail className="w-10 h-10 text-green-400" />
+            <div style={{ textAlign: 'center', padding: '16px 0', position: 'relative', zIndex: 10 }}>
+              <div style={{
+                width: 64, height: 64, borderRadius: 16,
+                backgroundColor: 'rgba(74,222,128,0.08)',
+                border: '1px solid rgba(74,222,128,0.2)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 20px',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+              }}>
+                <Mail style={{ width: 28, height: 28, color: '#4ade80' }} />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-3 font-['Playfair_Display']">Check Your Email</h2>
-              <p className="text-white/60 text-sm leading-relaxed max-w-sm mx-auto">
-                We&apos;ve sent a login link to <span className="text-white font-semibold">{email}</span>.
+              <h2 style={{ fontSize: 22, fontWeight: 800, color: '#fff', marginBottom: 12, fontFamily: '"Playfair Display", serif' }}>Check Your Email</h2>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13.5, lineHeight: 1.6, maxWidth: 300, margin: '0 auto' }}>
+                We&apos;ve sent a login link to <span style={{ color: '#fff', fontWeight: 600 }}>{email}</span>.<br/>
                 Click the link in your email to sign in.
               </p>
               <button
                 onClick={() => setSent(false)}
-                className="mt-8 text-white/40 hover:text-white/70 text-sm font-semibold transition-colors border-b border-white/10 hover:border-white/30 pb-0.5"
+                style={{
+                  marginTop: 32,
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: '1px solid rgba(255,255,255,0.15)',
+                  color: 'rgba(255,255,255,0.45)',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  paddingBottom: 2,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
               >
                 Use a different email
               </button>
@@ -175,8 +274,19 @@ export default function LoginPage() {
           )}
         </div>
 
-        <div className="text-center mt-8">
-          <Link href="/" className="text-white/40 hover:text-white/70 text-sm transition-colors font-medium">
+        <div style={{ textAlign: 'center', marginTop: 24 }}>
+          <Link 
+            href="/" 
+            style={{ 
+              color: 'rgba(255,255,255,0.4)', 
+              fontSize: 13, 
+              textDecoration: 'none',
+              fontWeight: 500,
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
+          >
             &larr; Back to directory
           </Link>
         </div>

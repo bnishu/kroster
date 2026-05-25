@@ -64,7 +64,7 @@ export async function deleteMember(id: string) {
 
 // --- CATEGORIES ---
 
-export async function createCategory(data: { name: string; description?: string }) {
+export async function createCategory(data: { name: string; description?: string; isVacant?: boolean }) {
   await checkAdmin()
   const slug = slugify(data.name)
   
@@ -76,7 +76,7 @@ export async function createCategory(data: { name: string; description?: string 
   revalidatePath('/admin/categories')
 }
 
-export async function updateCategory(id: string, data: { name: string; description?: string }) {
+export async function updateCategory(id: string, data: { name: string; description?: string; isVacant?: boolean }) {
   await checkAdmin()
   const slug = slugify(data.name)
   
@@ -85,6 +85,16 @@ export async function updateCategory(id: string, data: { name: string; descripti
     data: { ...data, slug }
   })
   
+  revalidatePath('/')
+  revalidatePath('/admin/categories')
+}
+
+export async function toggleCategoryVacant(id: string, isVacant: boolean) {
+  await checkAdmin()
+  await prisma.category.update({
+    where: { id },
+    data: { isVacant }
+  })
   revalidatePath('/')
   revalidatePath('/admin/categories')
 }

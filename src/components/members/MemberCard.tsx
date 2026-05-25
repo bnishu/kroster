@@ -151,7 +151,7 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
               fontWeight: 600,
               letterSpacing: '0.01em',
             }}>
-              {member.category.name}
+              {toTitleCase(member.category.name)}
             </div>
           )}
         </div>

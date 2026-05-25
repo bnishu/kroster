@@ -192,9 +192,13 @@ export function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
       <style>{`
         .custom-bento-grid {
           display: grid;
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(2, 1fr);
           gap: 16px;
         }
+        .bento-hero { grid-column: span 2; }
+        .bento-search { grid-column: span 2; }
+        .bento-stat { grid-column: span 1; }
+
         .bento-card {
           background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
           backdrop-filter: blur(20px);
@@ -221,9 +225,9 @@ export function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
             grid-template-columns: repeat(12, 1fr);
             gap: 24px;
           }
-          .bento-hero { grid-column: span 8; }
-          .bento-search { grid-column: span 4; }
-          .bento-stat { grid-column: span 3; }
+          .bento-hero { grid-column: span 8 !important; }
+          .bento-search { grid-column: span 4 !important; }
+          .bento-stat { grid-column: span 3 !important; }
         }
       `}</style>
     </section>

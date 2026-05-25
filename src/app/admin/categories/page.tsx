@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { Plus, Edit, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { toTitleCase } from '@/lib/utils'
+import { VacantToggle } from '@/components/admin/VacantToggle'
 
 export default async function AdminCategoriesPage() {
   const categories = await prisma.category.findMany({
@@ -54,15 +56,19 @@ export default async function AdminCategoriesPage() {
                 <th className="px-6 py-4 font-medium">Name</th>
                 <th className="px-6 py-4 font-medium">Slug</th>
                 <th className="px-6 py-4 font-medium">Members</th>
+                <th className="px-6 py-4 font-medium">Vacant</th>
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {categories.map(category => (
                 <tr key={category.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4 font-medium">{category.name}</td>
+                  <td className="px-6 py-4 font-medium">{toTitleCase(category.name)}</td>
                   <td className="px-6 py-4 text-white/60">{category.slug}</td>
                   <td className="px-6 py-4 text-white/60">{category._count.members}</td>
+                  <td className="px-6 py-4">
+                    <VacantToggle id={category.id} initialValue={category.isVacant} />
+                  </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Link href={`/admin/categories/${category.id}/edit`}>
@@ -70,14 +76,13 @@ export default async function AdminCategoriesPage() {
                           <Edit className="w-4 h-4" />
                         </Button>
                       </Link>
-                      {/* Delete should ideally be a form button with server action */}
                     </div>
                   </td>
                 </tr>
               ))}
               {categories.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-white/50">No categories found.</td>
+                  <td colSpan={5} className="px-6 py-8 text-center text-white/50">No categories found.</td>
                 </tr>
               )}
             </tbody>

@@ -198,7 +198,7 @@ export function EDCard({ member, index = 0 }: { member: MemberCardData; index?: 
               fontWeight: 600,
               letterSpacing: '0.02em',
             }}>
-              {member.category.name}
+              {toTitleCase(member.category.name)}
             </div>
           )}
         </div>

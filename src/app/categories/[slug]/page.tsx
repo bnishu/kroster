@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = await getCategory(slug)
   if (!category) return { title: 'Category Not Found' }
   return {
-    title: `${category.name} Members`,
-    description: category.description || `Browse BNI Krypton members in the ${category.name} category.`,
+    title: `${toTitleCase(category.name)} Members`,
+    description: category.description || `Browse BNI Krypton members in the ${toTitleCase(category.name)} category.`,
   }
 }
 
@@ -64,7 +64,7 @@ export default async function CategoryPage({ params }: Props) {
                 <ArrowLeft size={13} /> All Members
               </Link>
               <span style={{ color: 'rgba(255,255,255,0.20)', fontSize: 13 }}>/</span>
-              <span style={{ color: 'rgba(255,255,255,0.60)', fontSize: 13 }}>{category.name}</span>
+              <span style={{ color: 'rgba(255,255,255,0.60)', fontSize: 13 }}>{toTitleCase(category.name)}</span>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
@@ -86,7 +86,7 @@ export default async function CategoryPage({ params }: Props) {
                   lineHeight: 1.1,
                   letterSpacing: '-0.025em',
                 }}>
-                  {category.name}
+                  {toTitleCase(category.name)}
                 </h1>
                 {category.description && (
                   <p style={{ color: 'rgba(255,255,255,0.40)', fontSize: 15, marginTop: 8, maxWidth: 520, lineHeight: 1.65 }}>

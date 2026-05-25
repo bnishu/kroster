@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Crown, Shield, Star, Users } from 'lucide-react'
+import { Crown, Shield, Star, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import { HeroSection } from '@/components/sections/HeroSection'
-import { StickySearchBar } from '@/components/search/StickySearchBar'
-import { EventsSection } from '@/components/sections/EventsSection'
 import { MemberCard } from '@/components/members/MemberCard'
+import { VacantCategories } from '@/components/sections/VacantCategories'
 import type { Member, Event } from '@prisma/client'
 import { toTitleCase } from '@/lib/utils'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { EventsSection } from '@/components/sections/EventsSection'
 
 type MemberWithCategory = Member & {
   category?: { name: string; slug: string } | null
@@ -20,6 +21,7 @@ type Props = {
   headTable: MemberWithCategory[]
   members: MemberWithCategory[]
   events: Event[]
+  vacantCategories?: string[]
 }
 
 // ── Left-aligned Premium Section Header ─────────────────────────────────────
@@ -99,9 +101,19 @@ function SectionHeader({ icon: Icon, title, subtitle, color, count }: {
 }
 
 // ── Main Component ─────────────────────────────────────────────────────────
-export function HomePageClient({ eds, support, headTable, members, events }: Props) {
-  const [searchQuery, setSearchQuery] = useState('')
+export function HomePageClient({ eds, support, headTable, members, events, vacantCategories }: Props) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams ? searchParams.get('q') || '' : ''
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollLeft = () => {
+    scrollContainerRef.current?.scrollBy({ left: -240, behavior: 'smooth' })
+  }
+  const scrollRight = () => {
+    scrollContainerRef.current?.scrollBy({ left: 240, behavior: 'smooth' })
+  }
 
   const allMembersList = useMemo(() => [...eds, ...support, ...headTable, ...members], [eds, support, headTable, members])
 
@@ -141,25 +153,187 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
   const total = fEDs.length + fSupport.length + fHead.length + fMembers.length
   const isFiltering = !!searchQuery || !!selectedCategory
 
-  const clearFilters = () => { setSearchQuery(''); setSelectedCategory(null) }
+  const clearFilters = () => {
+    router.push('/')
+    setSelectedCategory(null)
+  }
+
+  const handleSearch = (val: string) => {
+    if (val.trim()) {
+      router.push(`/?q=${encodeURIComponent(val)}`)
+    } else {
+      router.push('/')
+    }
+  }
 
   return (
     <div style={{
       background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(182,31,43,0.05) 0%, #0A0A0A 100%)',
       minHeight: '100vh'
     }}>
-      <HeroSection onSearch={setSearchQuery} />
-
-      <StickySearchBar
-        onSearch={setSearchQuery}
-        value={searchQuery}
-        categories={categories.map(([n]) => n)}
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-      />
+      <HeroSection onSearch={handleSearch} />
 
       {/* ══ MEMBER SECTIONS ═════════════════════════════════════════════ */}
-      <div id="members" className="container-main" style={{ padding: '60px 24px 80px' }}>
+      <div id="members" className="container-main" style={{ padding: '40px 24px 80px' }}>
+        
+        {/* Category Filters Chip Grid Wrapper with navigation arrows */}
+        <div style={{ position: 'relative', width: '100%', marginBottom: 32, padding: '0 40px' }}>
+          {/* Left Arrow */}
+          <button 
+            onClick={scrollLeft}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: '40%',
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: 'rgba(9, 9, 9, 0.85)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'rgba(255, 255, 255, 0.7)',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.color = '#fff';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.2)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(182, 31, 43, 0.25)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.7)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(9, 9, 9, 0.85)';
+            }}
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          {/* Right Arrow */}
+          <button 
+            onClick={scrollRight}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: '40%',
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: 'rgba(9, 9, 9, 0.85)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'rgba(255, 255, 255, 0.7)',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.color = '#fff';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.2)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(182, 31, 43, 0.25)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.color = 'rgba(255, 255, 255, 0.7)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(9, 9, 9, 0.85)';
+            }}
+          >
+            <ChevronRight size={16} />
+          </button>
+
+          <div 
+            ref={scrollContainerRef}
+            style={{
+              display: 'flex',
+              gap: 10,
+              overflowX: 'auto',
+              paddingBottom: 16,
+              scrollbarWidth: 'none',
+            }}
+            className="category-filter-chips scrollbar-none"
+          >
+            <button
+              onClick={() => setSelectedCategory(null)}
+              style={{
+                flexShrink: 0,
+                padding: '8px 18px',
+                borderRadius: 99,
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                background: selectedCategory === null 
+                  ? 'linear-gradient(135deg, #B61F2B, #7A111B)' 
+                  : 'rgba(255,255,255,0.03)',
+                border: selectedCategory === null 
+                  ? '1px solid rgba(255,255,255,0.1)' 
+                  : '1px solid rgba(255,255,255,0.08)',
+                color: selectedCategory === null ? '#fff' : 'rgba(255,255,255,0.6)',
+                boxShadow: selectedCategory === null ? '0 4px 14px rgba(182,31,43,0.3)' : 'none',
+              }}
+              onMouseEnter={e => {
+                if (selectedCategory !== null) {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
+                  (e.currentTarget as HTMLElement).style.color = '#fff';
+                }
+              }}
+              onMouseLeave={e => {
+                if (selectedCategory !== null) {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)';
+                  (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.6)';
+                }
+              }}
+            >
+              All Categories
+            </button>
+            {categories.map(([cat, count]) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                style={{
+                  flexShrink: 0,
+                  padding: '8px 18px',
+                  borderRadius: 99,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  background: selectedCategory === cat 
+                    ? 'linear-gradient(135deg, #B61F2B, #7A111B)' 
+                    : 'rgba(255,255,255,0.03)',
+                  border: selectedCategory === cat 
+                    ? '1px solid rgba(255,255,255,0.1)' 
+                    : '1px solid rgba(255,255,255,0.08)',
+                  color: selectedCategory === cat ? '#fff' : 'rgba(255,255,255,0.6)',
+                  boxShadow: selectedCategory === cat ? '0 4px 14px rgba(182,31,43,0.3)' : 'none',
+                }}
+                onMouseEnter={e => {
+                  if (selectedCategory !== cat) {
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
+                    (e.currentTarget as HTMLElement).style.color = '#fff';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (selectedCategory !== cat) {
+                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)';
+                    (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.6)';
+                  }
+                }}
+              >
+                {toTitleCase(cat)} <span style={{ opacity: 0.4, fontSize: 11, marginLeft: 4 }}>({count})</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* ── Head Table ── */}
         <AnimatePresence mode="popLayout">
@@ -275,6 +449,7 @@ export function HomePageClient({ eds, support, headTable, members, events }: Pro
       </div>
 
       <EventsSection events={events} />
+      <VacantCategories categories={vacantCategories} />
     </div>
   )
 }

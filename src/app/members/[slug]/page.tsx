@@ -84,6 +84,28 @@ export default async function MemberProfilePage({ params }: Props) {
   const waUrl = member.whatsapp ? getWhatsAppUrl(member.whatsapp) : null
   const name = toTitleCase(member.fullName)
 
+  const fullName = member.fullName.trim()
+  const nameParts = fullName.split(/\s+/)
+  const firstName = nameParts[0] || ''
+  const lastName = nameParts.slice(1).join(' ') || ''
+  const categoryName = member.category?.name || ''
+  
+  const vcardLines = [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    `N:${lastName};${firstName};;;`,
+    `FN:${fullName}`,
+    `ORG:${member.businessName}`,
+    member.phone ? `TEL;TYPE=CELL,VOICE:${member.phone}` : '',
+    member.email ? `EMAIL;TYPE=PREF,INTERNET:${member.email}` : '',
+    member.website ? `URL:${member.website}` : '',
+    member.address ? `ADR:;;${member.address};;;` : '',
+    categoryName ? `TITLE:${categoryName}` : '',
+    categoryName ? `CATEGORIES:${categoryName}` : '',
+    'END:VCARD',
+  ].filter(Boolean)
+  const vcardText = vcardLines.join('\r\n')
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': ['Person', 'LocalBusiness'],
@@ -239,7 +261,7 @@ export default async function MemberProfilePage({ params }: Props) {
                       letterSpacing: '-0.01em',
                       marginBottom: 24,
                     }}>
-                      {member.category.name}
+                      {toTitleCase(member.category.name)}
                     </span>
                   )}
 
@@ -296,6 +318,7 @@ export default async function MemberProfilePage({ params }: Props) {
                     profileUrl={`${process.env.NEXT_PUBLIC_APP_URL || 'https://krypton.bni-nagpur.in'}/members/${member.slug}`}
                     whatsappUrl={getWhatsAppUrl(member.whatsapp || '')}
                     memberName={member.fullName}
+                    vcardText={vcardText}
                   />
                 </div>
 

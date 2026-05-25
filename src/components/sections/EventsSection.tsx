@@ -19,7 +19,7 @@ export function EventsSection({ events }: { events: Event[] }) {
   if (!events.length) return null
 
   return (
-    <section id="events" className="py-24 relative">
+    <section id="events" style={{ paddingTop: 96, paddingBottom: 96, position: 'relative' }}>
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111111] via-[#0D0305] to-[#111111] pointer-events-none" />
 
@@ -87,40 +87,74 @@ export function EventsSection({ events }: { events: Event[] }) {
                 className={`premium-card group ${isMilestone ? 'glow-gold' : isFvd ? 'glow-red' : isBizTalk ? 'glow-blue' : ''}`}
               >
                 {/* Event Image or Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-[#B61F2B]/15 to-[#7A111B]/5 relative overflow-hidden">
-                  {event.image ? (
+                {event.image ? (
+                  <div className="h-48 bg-gradient-to-br from-[#B61F2B]/15 to-[#7A111B]/5 relative overflow-hidden">
                     <Image src={event.image} alt={event.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#181818] to-[#121212]">
-                      <Calendar className="w-16 h-16 text-white/5" />
-                    </div>
-                  )}
-                  
-                  {/* Date Badge Overlay */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div style={{
-                      background: 'rgba(9, 9, 9, 0.85)',
-                      backdropFilter: 'blur(12px)',
-                      border: isMilestone ? '1px solid rgba(212, 175, 55, 0.4)' : isFvd ? '1px solid rgba(182, 31, 43, 0.4)' : isBizTalk ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid rgba(255, 255, 255, 0.15)',
-                      borderRadius: 12,
-                      padding: '8px 14px',
-                      textAlign: 'center',
-                      minWidth: 54,
-                    }}>
-                      <div style={{ color: isMilestone ? '#D4AF37' : isBizTalk ? '#38BDF8' : '#F0F0F0', fontWeight: 800, fontSize: 20, lineHeight: 1 }}>
-                        {new Date(event.eventDate).getDate()}
-                      </div>
-                      <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', marginTop: 3 }}>
-                        {new Date(event.eventDate).toLocaleString('en', { month: 'short' })}
+                    
+                    {/* Date Badge Overlay */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <div style={{
+                        background: 'rgba(9, 9, 9, 0.85)',
+                        backdropFilter: 'blur(12px)',
+                        border: isMilestone ? '1px solid rgba(212, 175, 55, 0.4)' : isFvd ? '1px solid rgba(182, 31, 43, 0.4)' : isBizTalk ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: 12,
+                        padding: '8px 14px',
+                        textAlign: 'center',
+                        minWidth: 54,
+                      }}>
+                        <div style={{ color: isMilestone ? '#D4AF37' : isBizTalk ? '#38BDF8' : '#F0F0F0', fontWeight: 800, fontSize: 20, lineHeight: 1 }}>
+                          {new Date(event.eventDate).getDate()}
+                        </div>
+                        <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', marginTop: 3 }}>
+                          {new Date(event.eventDate).toLocaleString('en', { month: 'short' })}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* Event Content Details */}
                 <div style={{ padding: '24px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
-                    {badgeText && (
+                    {!event.image && (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+                        {badgeText ? (
+                          <span style={{
+                            display: 'inline-flex',
+                            padding: '4px 10px',
+                            borderRadius: 6,
+                            background: isMilestone ? 'rgba(212, 175, 55, 0.12)' : isFvd ? 'rgba(182, 31, 43, 0.12)' : isBizTalk ? 'rgba(56, 189, 248, 0.12)' : 'rgba(255, 255, 255, 0.05)',
+                            border: isMilestone ? '1px solid rgba(212, 175, 55, 0.25)' : isFvd ? '1px solid rgba(182, 31, 43, 0.25)' : isBizTalk ? '1px solid rgba(56, 189, 248, 0.25)' : '1px solid rgba(255, 255, 255, 0.1)',
+                            color: isMilestone ? '#D4AF37' : isFvd ? '#E85464' : isBizTalk ? '#38BDF8' : '#ffffff',
+                            fontSize: 10,
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                          }}>
+                            {badgeText}
+                          </span>
+                        ) : <div />}
+                        
+                        <div style={{
+                          background: 'rgba(255, 255, 255, 0.04)',
+                          border: isMilestone ? '1px solid rgba(212, 175, 55, 0.3)' : isFvd ? '1px solid rgba(182, 31, 43, 0.3)' : isBizTalk ? '1px solid rgba(56, 189, 248, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: 8,
+                          padding: '4px 10px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                        }}>
+                          <span style={{ color: '#fff', fontWeight: 800, fontSize: 13 }}>
+                            {new Date(event.eventDate).getDate()}
+                          </span>
+                          <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: 9, fontWeight: 700, textTransform: 'uppercase' }}>
+                            {new Date(event.eventDate).toLocaleString('en', { month: 'short' })}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {event.image && badgeText && (
                       <span style={{
                         display: 'inline-flex',
                         padding: '4px 10px',

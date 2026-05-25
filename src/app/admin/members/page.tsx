@@ -123,7 +123,7 @@ export default async function AdminMembersPage() {
                       </span>
                     </td>
                     <td style={{ padding: '16px 24px', color: 'rgba(255,255,255,0.55)', fontSize: 13.5, fontWeight: 500 }}>
-                      {member.category?.name || <span style={{ color: 'rgba(255,255,255,0.20)' }}>—</span>}
+                      {member.category?.name ? toTitleCase(member.category.name) : <span style={{ color: 'rgba(255,255,255,0.20)' }}>—</span>}
                     </td>
                     <td style={{ padding: '16px 24px' }}>
                       <span style={{

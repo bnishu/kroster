@@ -2,25 +2,27 @@
 
 import { useState, useRef } from 'react'
 import QRCode from 'react-qr-code'
-import { QrCode, Share2, Download, Check, MessageSquare } from 'lucide-react'
+import { QrCode, Share2, Download, Check, MessageSquare, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 type Props = {
   profileUrl: string
   whatsappUrl: string
   memberName: string
+  vcardText: string
 }
 
-export function QRCard({ profileUrl, whatsappUrl, memberName }: Props) {
+export function QRCard({ profileUrl, whatsappUrl, memberName, vcardText }: Props) {
   const [copied, setCopied] = useState(false)
-  const [qrType, setQrType] = useState<'profile' | 'whatsapp'>('profile')
+  const [qrType, setQrType] = useState<'contact' | 'profile' | 'whatsapp'>('contact')
   const qrRef = useRef<HTMLDivElement>(null)
 
-  const activeUrl = qrType === 'profile' ? profileUrl : whatsappUrl
+  const activeQrValue = qrType === 'contact' ? vcardText : (qrType === 'profile' ? profileUrl : whatsappUrl)
+  const activeShareValue = qrType === 'contact' ? profileUrl : (qrType === 'profile' ? profileUrl : whatsappUrl)
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(activeUrl)
+      await navigator.clipboard.writeText(activeShareValue)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
@@ -34,7 +36,7 @@ export function QRCard({ profileUrl, whatsappUrl, memberName }: Props) {
         await navigator.share({
           title: `${memberName} | BNI Krypton`,
           text: `Check out ${memberName}'s premium business profile on BNI Krypton!`,
-          url: activeUrl,
+          url: activeShareValue,
         })
       } catch (err) {
         console.error('Error sharing: ', err)
@@ -118,7 +120,7 @@ export function QRCard({ profileUrl, whatsappUrl, memberName }: Props) {
             Share & Connect
           </h3>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 16, lineHeight: 1.4 }}>
-            Scan to view digital card or start WhatsApp chat
+            Scan to save contact directly, view profile or open chat
           </p>
 
           {/* Toggle Buttons */}
@@ -133,25 +135,36 @@ export function QRCard({ profileUrl, whatsappUrl, memberName }: Props) {
             marginBottom: 12,
           }}>
             <button
+              onClick={() => setQrType('contact')}
+              className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[10px] font-semibold transition-all cursor-pointer ${
+                qrType === 'contact' 
+                  ? 'bg-gradient-to-br from-[#D4AF37] to-[#a3801f] text-black shadow-md' 
+                  : 'text-white/40 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Users className="w-3 h-3" />
+              Contact
+            </button>
+            <button
               onClick={() => setQrType('profile')}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[10px] font-semibold transition-all cursor-pointer ${
                 qrType === 'profile' 
                   ? 'bg-gradient-to-br from-[#B61F2B] to-[#7A111B] text-white shadow-md' 
                   : 'text-white/40 hover:text-white hover:bg-white/5'
               }`}
             >
-              <QrCode className="w-3.5 h-3.5" />
+              <QrCode className="w-3 h-3" />
               Profile
             </button>
             <button
               onClick={() => setQrType('whatsapp')}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[10px] font-semibold transition-all cursor-pointer ${
                 qrType === 'whatsapp' 
                   ? 'bg-[#25D366] text-black shadow-md' 
                   : 'text-white/40 hover:text-white hover:bg-white/5'
               }`}
             >
-              <MessageSquare className="w-3.5 h-3.5" />
+              <MessageSquare className="w-3 h-3" />
               WhatsApp
             </button>
           </div>
@@ -213,7 +226,7 @@ export function QRCard({ profileUrl, whatsappUrl, memberName }: Props) {
           className="transform group-hover:scale-[1.03]"
         >
           <QRCode
-            value={activeUrl}
+            value={activeQrValue}
             size={120}
             level="H"
             style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
