@@ -155,7 +155,11 @@ export async function deleteCategory(id: string) {
 
 export async function createEvent(data: { title: string; description?: string; eventDate: Date; location?: string; image?: string; isPublished: boolean }) {
   await checkAdmin()
-  const slug = slugify(data.title)
+  let slug = slugify(data.title)
+  const existing = await prisma.event.findUnique({ where: { slug } })
+  if (existing) {
+    slug = `${slug}-${Date.now()}`
+  }
   
   await prisma.event.create({
     data: { ...data, slug }
@@ -168,7 +172,18 @@ export async function createEvent(data: { title: string; description?: string; e
 
 export async function updateEvent(id: string, data: { title: string; description?: string; eventDate: Date; location?: string; image?: string; isPublished: boolean }) {
   await checkAdmin()
-  const slug = slugify(data.title)
+  const currentEvent = await prisma.event.findUnique({ where: { id } })
+  if (!currentEvent) throw new Error('Event not found')
+
+  let slug = slugify(data.title)
+  if (slug !== currentEvent.slug) {
+    const existing = await prisma.event.findUnique({ where: { slug } })
+    if (existing) {
+      slug = `${slug}-${Date.now()}`
+    }
+  } else {
+    slug = currentEvent.slug
+  }
   
   await prisma.event.update({
     where: { id },

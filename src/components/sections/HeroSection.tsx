@@ -1,21 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { Calendar, MapPin, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { Search, X } from 'lucide-react'
 
-export function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
-  const [query, setQuery] = useState('')
-  const [focused, setFocused] = useState(false)
-
-  const handleChange = (v: string) => {
-    setQuery(v)
-    onSearch(v)
-  }
-  const handleClear = () => {
-    setQuery('')
-    onSearch('')
-  }
+export function HeroSection({ nextEvent }: { nextEvent?: any }) {
 
   return (
     <section id="hero" style={{ 
@@ -25,7 +13,6 @@ export function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
       paddingLeft: 16, 
       paddingRight: 16, 
       position: 'relative', 
-      overflow: 'hidden', 
       minHeight: '80vh', 
       display: 'flex', 
       alignItems: 'center' 
@@ -102,67 +89,69 @@ export function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
               }}>
                 Krypton
-              </span>{' '}Connects You<br/>to the Right People
+              </span>{' '}Elevates Your<br/>Business Potential
             </h1>
             
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 'clamp(15px, 1.8vw, 18px)', maxWidth: 500, lineHeight: 1.6 }}>
-              Nagpur&apos;s most trusted BNI chapter — building relationships that drive real business growth.
+              Join Nagpur&apos;s premier network of visionaries dedicated to mutual success, meaningful connections, and explosive business growth.
             </p>
           </motion.div>
 
-          {/* Search Card */}
+          {/* Next Meeting Card */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
-            className="bento-search bento-card"
+            className="bento-search bento-card hidden md:flex"
             style={{
               padding: '32px', position: 'relative', overflow: 'hidden',
-              display: 'flex', flexDirection: 'column', justifyContent: 'space-between'
+              display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.01) 100%)'
             }}
           >
             <div style={{
               position: 'absolute', bottom: -160, right: -160, width: 320, height: 320,
-              background: 'rgba(59, 130, 246, 0.1)', borderRadius: '50%', filter: 'blur(100px)', pointerEvents: 'none',
-              transition: 'background 0.7s ease'
+              background: 'rgba(239, 68, 68, 0.1)', borderRadius: '50%', filter: 'blur(100px)', pointerEvents: 'none'
             }} />
             
             <div style={{ marginBottom: 24 }}>
               <div style={{
-                width: 48, height: 48, borderRadius: 16, background: 'rgba(255,255,255,0.05)',
+                width: 48, height: 48, borderRadius: 16, background: 'rgba(239, 68, 68, 0.1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24,
-                border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1)'
+                border: '1px solid rgba(239, 68, 68, 0.2)', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1)'
               }}>
-                <Search color="rgba(255,255,255,0.6)" size={24} />
+                <Calendar color="#ef4444" size={24} />
               </div>
-              <h3 style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>Quick Search</h3>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>Find members, businesses, or specific categories instantly.</p>
+              <h3 style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>Upcoming Meeting</h3>
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>Join us for our weekly chapter meeting.</p>
             </div>
 
-            <div style={{ position: 'relative', marginTop: 'auto' }}>
-              <input
-                type="search"
-                value={query}
-                onChange={e => handleChange(e.target.value)}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                placeholder="Search..."
-                style={{
-                  width: '100%', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 16, padding: '16px 40px 16px 48px', color: '#fff', fontSize: 15,
-                  outline: 'none', transition: 'all 0.2s',
-                  boxShadow: focused ? 'inset 0 1px 1px rgba(255,255,255,0.05), 0 0 0 4px rgba(239, 68, 68, 0.1)' : 'inset 0 1px 1px rgba(255,255,255,0.05)'
-                }}
-              />
-              <Search size={18} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
-              {query && (
-                <button onClick={handleClear} style={{
-                  position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
-                  background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', padding: 4,
-                  cursor: 'pointer', color: 'rgba(255,255,255,0.4)', display: 'flex'
-                }}>
-                  <X size={14} />
-                </button>
-              )}
-            </div>
+            {nextEvent ? (
+              <div style={{ 
+                background: 'rgba(0,0,0,0.4)', borderRadius: 16, padding: 20, 
+                border: '1px solid rgba(255,255,255,0.05)', marginTop: 'auto'
+              }}>
+                <h4 style={{ color: '#fff', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>{nextEvent.title}</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>
+                    <Calendar size={16} color="#ef4444" style={{ flexShrink: 0 }} />
+                    <span style={{ lineHeight: 1.4 }}>
+                      {new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(nextEvent.eventDate))}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>
+                    <Clock size={16} color="#ef4444" style={{ flexShrink: 0 }} />
+                    <span>
+                      {new Intl.DateTimeFormat('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }).format(new Date(nextEvent.eventDate)).toLowerCase()}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>
+                    <MapPin size={16} color="#ef4444" style={{ flexShrink: 0 }} />
+                    <span style={{ lineHeight: 1.4 }}>{nextEvent.location || 'Hotel Centre Point, Nagpur'}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+               <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14, marginTop: 'auto' }}>No upcoming meetings scheduled.</div>
+            )}
           </motion.div>
 
           {/* Compact Stats Strip */}
@@ -172,9 +161,9 @@ export function HeroSection({ onSearch }: { onSearch: (q: string) => void }) {
           >
             {[
               { label: 'Members', value: '70+', color: '#60a5fa' },
-              { label: 'Referrals', value: '₹200Cr+', color: '#4ade80' },
+              { label: 'Business Done', value: '₹200Cr+', color: '#4ade80' },
               { label: 'Years', value: '5+', color: '#c084fc' },
-              { label: 'Categories', value: '40+', color: '#fb923c' },
+              { label: 'Referrals Passed', value: '20,000+', color: '#fb923c' },
             ].map((stat) => (
               <div key={stat.label} className="stat-pill">
                 <span className="stat-pill-value" style={{ color: stat.color }}>{stat.value}</span>

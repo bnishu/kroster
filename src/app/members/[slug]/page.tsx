@@ -367,6 +367,34 @@ export default async function MemberProfilePage({ params }: Props) {
           {/* ── Stacked Profile Content (Single Column Layout) ── */}
           <div className="flex flex-col gap-6 w-full pb-20">
 
+            {/* Private Analytics Section for Owner/Admin */}
+            {canEdit && member.analytics && (
+              <InfoSection title="Your Profile Analytics (Private)">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16 }}>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 20, textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 4 }}>{member.analytics.profileViews}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Profile Views</div>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 20, textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: '#4ade80', marginBottom: 4 }}>{member.analytics.waClicks}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>WhatsApp Clicks</div>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 20, textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: '#60a5fa', marginBottom: 4 }}>{member.analytics.callClicks}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Call Clicks</div>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 20, textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: '#c084fc', marginBottom: 4 }}>{member.analytics.webClicks}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Website Clicks</div>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 20, textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: '#fb923c', marginBottom: 4 }}>{member.analytics.shareCount}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Profile Shares</div>
+                  </div>
+                </div>
+              </InfoSection>
+            )}
+
             {/* About Member & Contact Details Side-by-Side Grid */}
             <div className="profile-bento-bottom">
               <style>{`

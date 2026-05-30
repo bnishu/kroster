@@ -4,38 +4,7 @@ import { Mail, MapPin, ExternalLink } from 'lucide-react'
 export function Footer() {
   return (
     <>
-      {/* Nagpur Skyline silhouette transition above footer */}
-      <div style={{
-        width: '100%',
-        height: 120,
-        position: 'relative',
-        overflow: 'hidden',
-        pointerEvents: 'none',
-        background: '#0A0A0A',
-        marginTop: 64,
-      }}>
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.04,
-          backgroundImage: 'url(/nagpur_outline.svg)',
-          backgroundPosition: 'bottom center',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          filter: 'brightness(0) invert(1)',
-          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
-          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
-        }} />
-        {/* Subtle top divider line */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent)',
-        }} />
-      </div>
+
 
       <footer style={{
         background: '#0D0D0D',

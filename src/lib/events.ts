@@ -4,8 +4,8 @@ export async function ensureUpcomingTuesdayMeetings() {
   try {
     const today = new Date()
     
-    // We will auto-generate up to 4 upcoming Tuesdays
-    for (let i = 1; i <= 4; i++) {
+    // We will auto-generate up to 8 upcoming Tuesdays
+    for (let i = 1; i <= 8; i++) {
       const targetDate = new Date(today)
       const day = targetDate.getDay()
       

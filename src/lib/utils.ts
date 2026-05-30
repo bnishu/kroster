@@ -36,6 +36,12 @@ export function getMemberRoleLabel(role: string, name?: string): string {
     if (n.includes('jitendra') && n.includes('roy')) return 'Secretary / Treasurer'
     if (n.includes('khushboo') && n.includes('murarka')) return 'Lead Visitor Host'
   }
+  if (role === 'SUPPORT' && name) {
+    const n = name.toLowerCase()
+    if (n.includes('mufazzal') && n.includes('fidvi')) return 'Chapter Area Director Consultant'
+    if (n.includes('abhishek') && n.includes('dhakate')) return 'Chapter Director Consultant'
+    if (n.includes('binal') && n.includes('vaidya')) return 'Chapter Ambassador'
+  }
   const labels: Record<string, string> = {
     ED: 'Executive Director',
     SUPPORT: 'Support Team',

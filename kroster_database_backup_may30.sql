@@ -1,0 +1,428 @@
+-- MySQL dump 10.13  Distrib 9.6.0, for macos26.4 (arm64)
+--
+-- Host: localhost    Database: kroster
+-- ------------------------------------------------------
+-- Server version	9.6.0
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
+SET @@SESSION.SQL_LOG_BIN= 0;
+
+--
+-- GTID state at the beginning of the backup 
+--
+
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '123ec6e8-59c2-11f1-84d8-04370987891c:1-1251';
+
+--
+-- Table structure for table `_prisma_migrations`
+--
+
+DROP TABLE IF EXISTS `_prisma_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `_prisma_migrations` (
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `checksum` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `finished_at` datetime(3) DEFAULT NULL,
+  `migration_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `rolled_back_at` datetime(3) DEFAULT NULL,
+  `started_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `applied_steps_count` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `_prisma_migrations`
+--
+
+LOCK TABLES `_prisma_migrations` WRITE;
+/*!40000 ALTER TABLE `_prisma_migrations` DISABLE KEYS */;
+INSERT INTO `_prisma_migrations` VALUES ('197cc494-a75d-48b0-beb1-55789ffad990','840c7ffceb2a2a30488a95a0c532a9462168fcd0d12c6d1fa3b43a1fcca43a0a','2026-05-18 13:32:56.946','20260518133056_init','',NULL,'2026-05-18 13:32:56.946',0);
+/*!40000 ALTER TABLE `_prisma_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `accounts`
+--
+
+DROP TABLE IF EXISTS `accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `accounts` (
+  `id` varchar(191) NOT NULL,
+  `userId` varchar(191) NOT NULL,
+  `type` varchar(191) NOT NULL,
+  `provider` varchar(191) NOT NULL,
+  `providerAccountId` varchar(191) NOT NULL,
+  `refresh_token` text,
+  `access_token` text,
+  `expires_at` int DEFAULT NULL,
+  `token_type` varchar(191) DEFAULT NULL,
+  `scope` varchar(191) DEFAULT NULL,
+  `id_token` text,
+  `session_state` varchar(191) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `accounts_provider_providerAccountId_key` (`provider`,`providerAccountId`),
+  KEY `accounts_userId_fkey` (`userId`),
+  CONSTRAINT `accounts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts`
+--
+
+LOCK TABLES `accounts` WRITE;
+/*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` varchar(191) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `slug` varchar(191) NOT NULL,
+  `description` text,
+  `icon` varchar(100) DEFAULT NULL,
+  `color` varchar(20) DEFAULT NULL,
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updatedAt` datetime(3) NOT NULL,
+  `isVacant` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `categories_slug_key` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES ('cmpqslttv00009oqsadikzbqq','Animation and 3d visualization','animation-and-3d-visualization',NULL,'ANI','#B61F2B','2026-05-29 10:42:16.771','2026-05-30 08:54:12.105',0),('cmpqslttz00019oqsm97oxeti','Fashion Designer and Stylist','fashion-designer-and-stylist',NULL,'FAS','#B61F2B','2026-05-29 10:42:16.775','2026-05-30 08:54:12.109',0),('cmpqsltu200029oqs5ockrtwj','Advertising Agency','advertising-agency',NULL,'ADV','#B61F2B','2026-05-29 10:42:16.778','2026-05-30 08:54:12.113',0),('cmpqsltu400039oqsi2w8t6yv','Corporate Event Management','corporate-event-management',NULL,'COR','#B61F2B','2026-05-29 10:42:16.780','2026-05-30 08:54:12.116',0),('cmpqsltu600049oqsmkd2a6av','Real estate Land Developer','real-estate-land-developer',NULL,'REA','#B61F2B','2026-05-29 10:42:16.782','2026-05-30 08:54:12.118',0),('cmpqsltu700059oqs5zcfcro1','Real estate sale and marketing','real-estate-sale-and-marketing',NULL,'REA','#B61F2B','2026-05-29 10:42:16.783','2026-05-30 08:54:12.120',0),('cmpqsltu900069oqsjf6mqw1j','Commercial & Hotel Kitchen','commercial-hotel-kitchen',NULL,'COM','#B61F2B','2026-05-29 10:42:16.785','2026-05-30 08:54:12.122',0),('cmpqsltua00079oqsqlmj26pe','Pest control services','pest-control-services',NULL,'PES','#B61F2B','2026-05-29 10:42:16.786','2026-05-30 08:54:12.124',0),('cmpqsltuc00089oqss9gnst3k','Electrical Contractor','electrical-contractor',NULL,'ELE','#B61F2B','2026-05-29 10:42:16.788','2026-05-30 08:54:12.126',0),('cmpqsltue00099oqs5zmz5rcn','Influencer Marketing','influencer-marketing',NULL,'INF','#B61F2B','2026-05-29 10:42:16.790','2026-05-30 08:54:12.128',0),('cmpqsltug000a9oqsp9cbv98m','Paint Manufacturer','paint-manufacturer',NULL,'PAI','#B61F2B','2026-05-29 10:42:16.792','2026-05-30 08:54:12.129',0),('cmpqsltui000b9oqsxhdx6b20','Industrial electrical contractor','industrial-electrical-contractor',NULL,'IND','#B61F2B','2026-05-29 10:42:16.794','2026-05-30 08:54:12.131',0),('cmpqsltuj000c9oqsep0r0tja','Homoeopath','homoeopath',NULL,'HOM','#B61F2B','2026-05-29 10:42:16.795','2026-05-30 08:54:12.133',0),('cmpqsltum000d9oqsv3i7w15c','General builder civil','general-builder-civil',NULL,'GEN','#B61F2B','2026-05-29 10:42:16.798','2026-05-30 08:54:12.135',0),('cmpqsltuo000e9oqswcmojdja','Mutual fund advisor','mutual-fund-advisor',NULL,'MUT','#B61F2B','2026-05-29 10:42:16.800','2026-05-30 08:54:12.136',0),('cmpqsltup000f9oqs8f1eu98q','Modular Kitchen & Wardrobes','modular-kitchen-wardrobes',NULL,'MOD','#B61F2B','2026-05-29 10:42:16.801','2026-05-30 08:54:12.138',0),('cmpqsltuq000g9oqs978prn0z','Biofuel','biofuel',NULL,'BIO','#B61F2B','2026-05-29 10:42:16.802','2026-05-30 08:54:12.140',0),('cmpqsltus000h9oqs10mzqckw','Account Service','account-service',NULL,'ACC','#B61F2B','2026-05-29 10:42:16.804','2026-05-30 08:54:12.141',0),('cmpqsltuu000i9oqs2oskxs29','Ayurved','ayurved',NULL,'AYU','#B61F2B','2026-05-29 10:42:16.806','2026-05-30 08:54:12.143',0),('cmpqsltuv000j9oqsr1w4f9di','Car Service and Body shop','car-service-and-body-shop',NULL,'CAR','#B61F2B','2026-05-29 10:42:16.807','2026-05-30 08:54:12.144',0),('cmpqsltux000k9oqstog505qq','Fabric, Customized Stitching and Readymade','fabric-customized-stitching-and-readymade',NULL,'FAB','#B61F2B','2026-05-29 10:42:16.809','2026-05-30 08:54:12.146',0),('cmpqsltuz000l9oqswtbvoqvn','Home Loans, Car Loans, Mortgage Loans','home-loans-car-loans-mortgage-loans',NULL,'HOM','#B61F2B','2026-05-29 10:42:16.811','2026-05-30 08:54:12.147',0),('cmpqsltv0000m9oqsjsk0k6g8','FACADE CONTRACTOR','facade-contractor',NULL,'FAC','#B61F2B','2026-05-29 10:42:16.812','2026-05-30 08:54:12.148',0),('cmpqsltv2000n9oqswim6q3v3','Batteries & Power Backup Systems','batteries-power-backup-systems',NULL,'BAT','#B61F2B','2026-05-29 10:42:16.814','2026-05-30 08:54:12.150',0),('cmpqsltv4000o9oqswlwm34st','Fire & safety Equipment','fire-safety-equipment',NULL,'FIR','#B61F2B','2026-05-29 10:42:16.816','2026-05-30 08:54:12.151',0),('cmpqsltv6000p9oqsy4xejysh','CA indirect taxation','ca-indirect-taxation',NULL,'CA ','#B61F2B','2026-05-29 10:42:16.818','2026-05-30 08:54:12.152',0),('cmpqsltv8000q9oqsbierbuo8','Clothing & Accessories Retailer','clothing-accessories-retailer',NULL,'CLO','#B61F2B','2026-05-29 10:42:16.820','2026-05-30 08:54:12.153',0),('cmpqsltv9000r9oqs17ugfm3q','Outdoor Advertising','outdoor-advertising',NULL,'OUT','#B61F2B','2026-05-29 10:42:16.821','2026-05-30 08:54:12.154',0),('cmpqsltva000s9oqs3elrlmh8','Fine Artist','fine-artist',NULL,'FIN','#B61F2B','2026-05-29 10:42:16.822','2026-05-30 08:54:12.155',0),('cmpqsltvc000t9oqs7dpk67v5','Vastu Shastra consultant','vastu-shastra-consultant',NULL,'VAS','#B61F2B','2026-05-29 10:42:16.824','2026-05-30 08:54:12.156',0),('cmpqsltvd000u9oqs3xdh5hzc','Domestic and international tkts visa and passports','domestic-and-international-tkts-visa-and-passports',NULL,'DOM','#B61F2B','2026-05-29 10:42:16.825','2026-05-30 08:54:12.158',0),('cmpqsltvf000v9oqsoc5rks47','Glass','glass',NULL,'GLA','#B61F2B','2026-05-29 10:42:16.827','2026-05-30 08:54:12.159',0),('cmpqsltvi000w9oqs7wc8cqbv','Life Insurance','life-insurance',NULL,'LIF','#B61F2B','2026-05-29 10:42:16.830','2026-05-30 08:54:12.160',0),('cmpqsltvj000x9oqsykznbrak','Commercial Furniture Manufacturer','commercial-furniture-manufacturer',NULL,'COM','#B61F2B','2026-05-29 10:42:16.831','2026-05-30 08:54:12.161',0),('cmpqsltvl000y9oqs1327b9dl','Building materials supplier','building-materials-supplier',NULL,'BUI','#B61F2B','2026-05-29 10:42:16.833','2026-05-30 08:54:12.162',0),('cmpqsltvn000z9oqs3k4tsvha','Cosmetologist And Aesthetic Physician','cosmetologist-and-aesthetic-physician',NULL,'COS','#B61F2B','2026-05-29 10:42:16.835','2026-05-30 08:54:12.163',0),('cmpqsltvo00109oqs8ag7rr61','Land Survey Consultant','land-survey-consultant',NULL,'LAN','#B61F2B','2026-05-29 10:42:16.836','2026-05-30 08:54:12.164',0),('cmpqsltvp00119oqsvrp21oun','Digital Marketing','digital-marketing',NULL,'DIG','#B61F2B','2026-05-29 10:42:16.837','2026-05-30 08:54:12.165',0),('cmpqsltvq00129oqsnwe3kx62','Fire rated Doors and Garbage Chutes','fire-rated-doors-and-garbage-chutes',NULL,'FIR','#B61F2B','2026-05-29 10:42:16.838','2026-05-30 08:54:12.166',0),('cmpqsltvr00139oqsl2haumpw','TILES','tiles',NULL,'TIL','#B61F2B','2026-05-29 10:42:16.839','2026-05-30 08:54:12.167',0),('cmpqsltvs00149oqssdrggswc','Business Coach','business-coach',NULL,'BUS','#B61F2B','2026-05-29 10:42:16.840','2026-05-30 08:54:12.168',0),('cmpqsltvt00159oqstsjp0i30','Multi-speciality hospital','multi-speciality-hospital',NULL,'MUL','#B61F2B','2026-05-29 10:42:16.841','2026-05-30 08:54:12.169',0),('cmpqsltvu00169oqs1sqfqxpo','Investment Advisory','investment-advisory',NULL,'INV','#B61F2B','2026-05-29 10:42:16.842','2026-05-30 08:54:12.170',0),('cmpqsltvw00179oqsdx43i0nw','Fine Jewellery','fine-jewellery',NULL,'FIN','#B61F2B','2026-05-29 10:42:16.844','2026-05-30 08:54:12.171',0),('cmpqsltvw00189oqs4lbzm7zd','Quality Dry Fruits','quality-dry-fruits',NULL,'QUA','#B61F2B','2026-05-29 10:42:16.844','2026-05-30 08:54:12.173',0),('cmpqsltvy00199oqs0uag4o1i','Food and Drugs Export - Import Over The Globe','food-and-drugs-export-import-over-the-globe',NULL,'FOO','#B61F2B','2026-05-29 10:42:16.846','2026-05-30 08:54:12.174',0),('cmpqsltvz001a9oqs7bttcuh1','Plywood, Veneers & Laminates','plywood-veneers-laminates',NULL,'PLY','#B61F2B','2026-05-29 10:42:16.847','2026-05-30 08:54:12.175',0),('cmpqsltw1001b9oqsm9bzrtds','Online ERP software','online-erp-software',NULL,'ONL','#B61F2B','2026-05-29 10:42:16.849','2026-05-30 08:54:12.176',0),('cmpqsltw2001c9oqsf7szsqjg','General Insurance','general-insurance',NULL,'GEN','#B61F2B','2026-05-29 10:42:16.850','2026-05-30 08:54:12.177',0),('cmpqsltw3001d9oqsxhfnjclj','Travel Agent','travel-agent',NULL,'TRA','#B61F2B','2026-05-29 10:42:16.851','2026-05-30 08:54:12.178',0),('cmpqsltw4001e9oqsaq7cydlg','Residential Real estate agent','residential-real-estate-agent',NULL,'RES','#B61F2B','2026-05-29 10:42:16.852','2026-05-30 08:54:12.179',0),('cmpqsltw5001f9oqsco9yxntv','Weatherproofing and Waterproofing','weatherproofing-and-waterproofing',NULL,'WEA','#B61F2B','2026-05-29 10:42:16.853','2026-05-30 08:54:12.180',0),('cmpqsltw6001g9oqs63umd43m','Solar','solar',NULL,'SOL','#B61F2B','2026-05-29 10:42:16.854','2026-05-30 08:54:12.182',0),('cmpqsltw7001h9oqsgjsvsqwo','Nutraceuticals, Pharmaceuticals & Cold Pressed Edible Oils','nutraceuticals-pharmaceuticals-cold-pressed-edible-oils',NULL,'NUT','#B61F2B','2026-05-29 10:42:16.855','2026-05-30 08:54:12.184',0),('cmpqsltw8001i9oqs8p9eiy6p','Brain and Spine Surgery','brain-and-spine-surgery',NULL,'BRA','#B61F2B','2026-05-29 10:42:16.856','2026-05-30 08:54:12.185',0),('cmpqsltw9001j9oqsh7ww0yfi','DENTIST','dentist',NULL,'DEN','#B61F2B','2026-05-29 10:42:16.857','2026-05-30 08:54:12.186',0),('cmpqsltwa001k9oqsdyl3vo63','Rcc/cement/Hume pipes','rcccementhume-pipes',NULL,'RCC','#B61F2B','2026-05-29 10:42:16.858','2026-05-30 08:54:12.187',0),('cmpqsltwb001l9oqs1c2qrcjc','WEBSITE DESIGN & DEVELOPMENT','website-design-development',NULL,'WEB','#B61F2B','2026-05-29 10:42:16.859','2026-05-30 08:54:12.188',0),('cmpqsltwc001m9oqs7hat6mnm','Eye doctor','eye-doctor',NULL,'EYE','#B61F2B','2026-05-29 10:42:16.860','2026-05-30 08:54:12.188',0),('cmpqsltwd001n9oqsicxynpe2','Residential interior Designer','residential-interior-designer',NULL,'RES','#B61F2B','2026-05-29 10:42:16.861','2026-05-30 08:54:12.189',0),('cmpqsltwf001o9oqse3s7zti9','Full Body Health Checkup','full-body-health-checkup',NULL,'FUL','#B61F2B','2026-05-29 10:42:16.863','2026-05-30 08:54:12.190',0),('cmpqsltwg001p9oqs81k4vo1u','Painting contractor','painting-contractor',NULL,'PAI','#B61F2B','2026-05-29 10:42:16.864','2026-05-30 08:54:12.191',0),('cmpqsltwh001q9oqsikt5mk1a','Business Development','business-development',NULL,'BUS','#B61F2B','2026-05-29 10:42:16.865','2026-05-30 08:54:12.192',0),('cmpqsltwi001r9oqsy0ddfx3a','Business Consulting','business-consulting',NULL,'BUS','#B61F2B','2026-05-29 10:42:16.866','2026-05-30 08:54:12.193',0),('cmpqsltwj001s9oqsg94b6ri0','Photography','photography',NULL,'PHO','#B61F2B','2026-05-29 10:42:16.867','2026-05-30 08:54:12.194',0),('cmpqsltwk001t9oqs0nrw6vsr','Business Management','business-management',NULL,'BUS','#B61F2B','2026-05-29 10:42:16.868','2026-05-30 08:54:12.194',0),('cmpqsltwl001u9oqsraf0u6uy','Business Networking','business-networking',NULL,'BUS','#B61F2B','2026-05-29 10:42:16.869','2026-05-30 08:54:12.195',0),('cmpqsltwn001v9oqsoxw01w4d','Architect – Commercial','architect-commercial',NULL,'ARC','#B61F2B','2026-05-29 10:42:16.871','2026-05-30 08:54:12.196',1),('cmpqsltwo001w9oqs0pmm5nhe','Architect – Residential','architect-residential',NULL,'ARC','#B61F2B','2026-05-29 10:42:16.872','2026-05-30 08:54:12.197',1),('cmpqsltwp001x9oqs45b3772n','Architect – Landscape','architect-landscape',NULL,'ARC','#B61F2B','2026-05-29 10:42:16.873','2026-05-30 08:54:12.198',1),('cmpqsltwq001y9oqsky622bph','PEB Shed','peb-shed',NULL,'PEB','#B61F2B','2026-05-29 10:42:16.874','2026-05-30 08:54:12.198',1),('cmpqsltwr001z9oqsjfo89drq','HVAC Consultant','hvac-consultant',NULL,'HVA','#B61F2B','2026-05-29 10:42:16.875','2026-05-30 08:54:12.199',1),('cmpqsltws00209oqsutrup1ib','Civil Lawyer','civil-lawyer',NULL,'CIV','#B61F2B','2026-05-29 10:42:16.876','2026-05-30 08:54:12.200',1),('cmpqsltwt00219oqsq2oli4lt','CCTV & Security Systems','cctv-security-systems',NULL,'CCT','#B61F2B','2026-05-29 10:42:16.877','2026-05-30 08:54:12.200',1),('cmpqsltwu00229oqspq5vt2t2','Housekeeping Services','housekeeping-services',NULL,'HOU','#B61F2B','2026-05-29 10:42:16.878','2026-05-30 08:54:12.201',1),('cmpqsltwv00239oqs9uttz6oo','Water Purifier Dealer','water-purifier-dealer',NULL,'WAT','#B61F2B','2026-05-29 10:42:16.879','2026-05-30 08:54:12.202',1),('cmpqsltww00249oqsk34ba2oa','Cold Storage','cold-storage',NULL,'COL','#B61F2B','2026-05-29 10:42:16.880','2026-05-30 08:54:12.203',1),('cmpqsltww00259oqs3ktr89nc','Car Accessories Dealer','car-accessories-dealer',NULL,'CAR','#B61F2B','2026-05-29 10:42:16.880','2026-05-30 08:54:12.203',1),('cmpqsltwy00269oqs8c4yeqpa','Tyre Dealer','tyre-dealer',NULL,'TYR','#B61F2B','2026-05-29 10:42:16.882','2026-05-30 08:54:12.204',1),('cmpqsltwy00279oqs0mndt8q2','Taxi Services','taxi-services',NULL,'TAX','#B61F2B','2026-05-29 10:42:16.882','2026-05-30 08:54:12.205',1),('cmpqsltwz00289oqsbly3gqib','Courier & Logistics','courier-logistics',NULL,'COU','#B61F2B','2026-05-29 10:42:16.883','2026-05-30 08:54:12.206',1),('cmpqsltx000299oqswarz53te','Gynaecologist','gynaecologist',NULL,'GYN','#B61F2B','2026-05-29 10:42:16.884','2026-05-30 08:54:12.206',1),('cmpqsltx1002a9oqson0zbm25','Heart Surgeon / Cardiologist','heart-surgeon-cardiologist',NULL,'HEA','#B61F2B','2026-05-29 10:42:16.885','2026-05-30 08:54:12.207',1),('cmpqsltx2002b9oqspk0k78rb','Pediatrician','pediatrician',NULL,'PED','#B61F2B','2026-05-29 10:42:16.886','2026-05-30 08:54:12.208',1),('cmpqsltx2002c9oqsstl421qk','Nutritionist','nutritionist',NULL,'NUT','#B61F2B','2026-05-29 10:42:16.886','2026-05-30 08:54:12.208',1),('cmpqsltx3002d9oqs62onwstz','Gym Owner','gym-owner',NULL,'GYM','#B61F2B','2026-05-29 10:42:16.887','2026-05-30 08:54:12.214',1),('cmpqsltx4002e9oqsis98zi92','Baker','baker',NULL,'BAK','#B61F2B','2026-05-29 10:42:16.888','2026-05-30 08:54:12.214',1),('cmpqsltx5002f9oqs2pj313a5','Banquet','banquet',NULL,'BAN','#B61F2B','2026-05-29 10:42:16.889','2026-05-30 08:54:12.215',1),('cmpqsltx6002g9oqs4h75yosm','Event Planner – Wedding & Personal Events','event-planner-wedding-personal-events',NULL,'EVE','#B61F2B','2026-05-29 10:42:16.890','2026-05-30 08:54:12.216',1),('cmpqsltx6002h9oqsxejcctwa','Café Shop','caf-shop',NULL,'CAF','#B61F2B','2026-05-29 10:42:16.890','2026-05-30 08:54:12.217',1),('cmpqsltx7002i9oqs67g03k3j','Perfumes','perfumes',NULL,'PER','#B61F2B','2026-05-29 10:42:16.891','2026-05-30 08:54:12.217',1),('cmpqsltx8002j9oqsd7fmtqz2','Graphic Designer','graphic-designer',NULL,'GRA','#B61F2B','2026-05-29 10:42:16.892','2026-05-30 08:54:12.218',1),('cmpqsltxa002k9oqs7o0p4p16','Printing Services','printing-services',NULL,'PRI','#B61F2B','2026-05-29 10:42:16.894','2026-05-30 08:54:12.219',1),('cmpqsltxb002l9oqsp58tftgl','Company Secretary','company-secretary',NULL,'COM','#B61F2B','2026-05-29 10:42:16.895','2026-05-30 08:54:12.220',1),('cmpqsltxc002m9oqsug3e731d','Manpower Consultant','manpower-consultant',NULL,'MAN','#B61F2B','2026-05-29 10:42:16.896','2026-05-30 08:54:12.220',1),('cmpqsltxd002n9oqsfqie7ijt','Grocery Merchant','grocery-merchant',NULL,'GRO','#B61F2B','2026-05-29 10:42:16.897','2026-05-30 08:54:12.221',1),('cmpqsltxd002o9oqs4g7puu25','Mobile Retailer','mobile-retailer',NULL,'MOB','#B61F2B','2026-05-29 10:42:16.897','2026-05-30 08:54:12.222',1),('cmpqsltxe002p9oqssnf97xih','Stationery Supplier','stationery-supplier',NULL,'STA','#B61F2B','2026-05-29 10:42:16.898','2026-05-30 08:54:12.223',1),('cmpqsltxf002q9oqs9yvpchwf','White Goods Dealer','white-goods-dealer',NULL,'WHI','#B61F2B','2026-05-29 10:42:16.899','2026-05-30 08:54:12.223',1),('cmps5m7zi000a4gqs3f29ko55','Optician','optician','Optician / Opticals',NULL,NULL,'2026-05-30 09:34:16.302','2026-05-30 09:34:16.302',0),('cmpsikloc000084qsr6yixtd3','Home Furnishing','home-furnishing','',NULL,NULL,'2026-05-30 15:36:55.740','2026-05-30 15:36:55.740',0),('cmpsimp28000184qsca6yjac6','Electrical Equipment Manufacturer','electrical-equipment-manufacturer','',NULL,NULL,'2026-05-30 15:38:33.440','2026-05-30 15:38:33.440',0);
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `events`
+--
+
+DROP TABLE IF EXISTS `events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `events` (
+  `id` varchar(191) NOT NULL,
+  `title` varchar(191) NOT NULL,
+  `slug` varchar(191) NOT NULL,
+  `description` text,
+  `eventDate` datetime(3) NOT NULL,
+  `location` varchar(500) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL,
+  `isPublished` tinyint(1) NOT NULL DEFAULT '1',
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updatedAt` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `events_slug_key` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events`
+--
+
+LOCK TABLES `events` WRITE;
+/*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` VALUES ('cmpqsltzz004p9oqs1jud1zc1','🏆 300th Landmark Weekly Meeting — BNI Krypton','300th-milestone-meeting','A momentous milestone! Celebrate our 300th weekly chapter meeting of BNI Krypton. Witness premium networking, special leadership keynotes, and massive business opportunities with Nagpur\'s leading business network.','2026-06-02 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-29 10:42:16.991','2026-05-29 10:42:16.991'),('cmpqslu00004q9oqs4sb69rq5','Weekly Business Conclave — BNI Krypton','weekly-meeting-2026-06-09','Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.','2026-06-09 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-29 10:42:16.992','2026-05-29 10:42:16.992'),('cmpqslu01004r9oqsogtciahp','🚀 Focus Visitors Day (FVD) — BNI Krypton','focus-visitors-day-2026','Grow your business exponentially! BNI Krypton is hosting its mega Focus Visitors Day. A high-energy referral day custom-tailored for selected key industries to showcase and connect.','2026-06-16 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-29 10:42:16.993','2026-05-30 14:43:05.245'),('cmpqslu02004s9oqspzm8vo6d','Weekly Business Conclave — BNI Krypton','weekly-meeting-2026-06-23','Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.','2026-06-23 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-29 10:42:16.994','2026-05-29 10:42:16.994'),('cmpsd5we2000f4gqs3bp0j00r','Weekly Business Conclave — BNI Krypton','weekly-meeting-2026-06-30','Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.','2026-06-30 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-30 13:05:31.707','2026-05-30 13:05:31.707'),('cmpsd5wef000i4gqs8okf5b2t','Weekly Business Conclave — BNI Krypton','weekly-meeting-2026-07-07','Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.','2026-07-07 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-30 13:05:31.719','2026-05-30 13:05:31.719'),('cmpsd5wk0000j4gqsxghn4pi9','Weekly Business Conclave — BNI Krypton','weekly-meeting-2026-07-14','Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.','2026-07-14 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-30 13:05:31.920','2026-05-30 13:05:31.920'),('cmpsd5wn8000k4gqskv2uoqwq','Weekly Business Conclave — BNI Krypton','weekly-meeting-2026-07-21','Join BNI Krypton\'s weekly networking meeting to pitch your business, swap high-quality referrals, and collaborate with Nagpur\'s elite business professionals.','2026-07-21 02:00:00.000','Hotel Centre Point, Ramdaspeth, Nagpur',NULL,1,'2026-05-30 13:05:32.036','2026-05-30 13:05:32.036');
+/*!40000 ALTER TABLE `events` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `member_analytics`
+--
+
+DROP TABLE IF EXISTS `member_analytics`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `member_analytics` (
+  `id` varchar(191) NOT NULL,
+  `memberId` varchar(191) NOT NULL,
+  `profileViews` int NOT NULL DEFAULT '0',
+  `callClicks` int NOT NULL DEFAULT '0',
+  `waClicks` int NOT NULL DEFAULT '0',
+  `webClicks` int NOT NULL DEFAULT '0',
+  `shareCount` int NOT NULL DEFAULT '0',
+  `updatedAt` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `member_analytics_memberId_key` (`memberId`),
+  CONSTRAINT `member_analytics_memberId_fkey` FOREIGN KEY (`memberId`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `member_analytics`
+--
+
+LOCK TABLES `member_analytics` WRITE;
+/*!40000 ALTER TABLE `member_analytics` DISABLE KEYS */;
+INSERT INTO `member_analytics` VALUES ('cmpruwjog00004jqserhsfsyi','cmpqsltzr004i9oqsk0ofbfpc',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmprvggk600024jqsasg5fqs0','cmpqsltyr003i9oqsx6bw1q5b',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmprxujb400034jqsthi4zxc4','cmpqsltz3003t9oqsbr2wg9dw',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps122ho00004gqsk4ry3ijj','cmpqsltzb00419oqs6wskdv2p',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps1469800014gqsk0saeg4r','cmpqsltzi00499oqsy4pyj8uo',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps16v7x00024gqsz1m3klka','cmpqsltzn004f9oqs6i48hd5b',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps2pudj00034gqsm2kixtmf','cmpqsltxn002u9oqs1v3pa0gt',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps2qggx00044gqslan5ho1k','cmpqsltxm002t9oqsdmwy3xlo',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps2r97m00054gqstc6hx8j8','cmpqsltxo002v9oqsuz06h0lr',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps42xvl00064gqsbvwf8bea','cmpqslty300339oqsyfhnmi43',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps49wgi00074gqso91i11no','cmpqslty600369oqs7ilq1m5c',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps4vdf600084gqsej3ez4m8','cmpqsltxi002r9oqsngc12lph',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps5kg5900094gqsutahgvo2','cmpqsltzm004e9oqs44kye407',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps5ovqk000c4gqsow13so9k','cmps5mhjh000b4gqs82lej727',0,0,0,0,0,'2026-05-30 15:11:06.580'),('cmps6f7h9000d4gqsjv9cybtc','cmpqsltxz00319oqsgbbp05kx',0,0,0,0,0,'2026-05-30 15:11:06.580');
+/*!40000 ALTER TABLE `member_analytics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `members`
+--
+
+DROP TABLE IF EXISTS `members`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `members` (
+  `id` varchar(191) NOT NULL,
+  `fullName` varchar(191) NOT NULL,
+  `slug` varchar(191) NOT NULL,
+  `businessName` varchar(191) NOT NULL,
+  `categoryId` varchar(191) DEFAULT NULL,
+  `phone` varchar(30) DEFAULT NULL,
+  `whatsapp` varchar(30) DEFAULT NULL,
+  `email` varchar(191) DEFAULT NULL,
+  `website` varchar(500) DEFAULT NULL,
+  `shortIntro` text,
+  `fullDescription` text,
+  `address` text,
+  `googleMapsUrl` text,
+  `profileImage` varchar(500) DEFAULT NULL,
+  `companyLogo` varchar(500) DEFAULT NULL,
+  `galleryImages` json DEFAULT NULL,
+  `facebook` varchar(500) DEFAULT NULL,
+  `linkedin` varchar(500) DEFAULT NULL,
+  `instagram` varchar(500) DEFAULT NULL,
+  `youtube` varchar(500) DEFAULT NULL,
+  `referralExpectation` text,
+  `services` text,
+  `businessTiming` varchar(500) DEFAULT NULL,
+  `featured` tinyint(1) NOT NULL DEFAULT '0',
+  `displayOrder` int NOT NULL DEFAULT '999',
+  `memberRole` enum('ED','SUPPORT','HEAD_TABLE','MEMBER') NOT NULL DEFAULT 'MEMBER',
+  `isActive` tinyint(1) NOT NULL DEFAULT '1',
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updatedAt` datetime(3) NOT NULL,
+  `teamRole` varchar(191) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `members_slug_key` (`slug`),
+  KEY `members_slug_idx` (`slug`),
+  KEY `members_memberRole_idx` (`memberRole`),
+  KEY `members_displayOrder_idx` (`displayOrder`),
+  KEY `members_categoryId_fkey` (`categoryId`),
+  CONSTRAINT `members_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `members`
+--
+
+LOCK TABLES `members` WRITE;
+/*!40000 ALTER TABLE `members` DISABLE KEYS */;
+INSERT INTO `members` VALUES ('cmpqsltxi002r9oqsngc12lph','Bhaveshh Tahalramani','bhaveshh-tahalramani','BNI Nagpur','cmpqsltwh001q9oqsikt5mk1a','+91-98765-43210','919876543210','bhavesh@bninagpur.com','','Executive Director of BNI Nagpur, empowering local businesses to grow through structured, professional referral marketing.','Bhaveshh Tahalramani is the Executive Director of BNI Nagpur. Under his leadership, Nagpur has witnessed massive business referral growth, bridging the gap between local enterprise and regional networking opportunities.','',NULL,'/uploads/members/bhaveshh-tahalramani-1780132216195.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'ED',1,'2026-05-29 10:42:16.902','2026-05-30 09:28:05.197',''),('cmpqsltxk002s9oqslvc0laoi','Riddhi Saboo Tahalramani','riddhi-saboo-tahalramani','BNI Nagpur','cmpqsltwi001r9oqsy0ddfx3a','+91-98765-43211','919876543211','riddhi@bninagpur.com','','Executive Director of BNI Nagpur, fostering business leadership, collaboration, and networking excellence.','Riddhi Saboo Tahalramani co-leads BNI Nagpur as Executive Director, spearheading training, chapter mentorship, and business development across Nagpur\'s elite business network.','',NULL,'/uploads/members/riddhi-saboo-tahalramani-1780132187005.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,2,'ED',1,'2026-05-29 10:42:16.904','2026-05-30 09:28:05.198',''),('cmpqsltxm002t9oqsdmwy3xlo','Abhishek Dhakate','abhishek-dhakate','AD Photography','cmpqsltwj001s9oqsg94b6ri0','+91-98765-43212','919876543212','abhishek@adphotography.in','','Chapter Director Consultant for BNI Krypton. Leading photography and visual brand consultant.','Abhishek Dhakate serves as the Chapter Director Consultant for BNI Krypton. His dedication helps structure meetings, monitor chapter health, and consult members on chapter policies.','',NULL,'/uploads/members/abhishek-dhakate-1780128989221.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'SUPPORT',1,'2026-05-29 10:42:16.906','2026-05-30 09:28:05.199',NULL),('cmpqsltxn002u9oqs1v3pa0gt','Mufazzal Fidvi','mufazzal-fidvi','Fidvi Consultants','cmpqsltwk001t9oqs0nrw6vsr','+91-98765-43213','919876543213','mufazzal@fidviconsultants.com','','Chapter Area Director Consultant. Supporting business scalability and leadership development.','Mufazzal Fidvi is the Area Director Consultant. He brings immense business growth experience, guiding chapter leaders and ensuring strategic collaboration within BNI.','',NULL,'/uploads/members/mufazzal-fidvi-1780129020296.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'SUPPORT',1,'2026-05-29 10:42:16.907','2026-05-30 09:28:05.200',NULL),('cmpqsltxo002v9oqsuz06h0lr','Binal Vaidya','binal-vaidya','BNI Krypton','cmpqsltwl001u9oqsraf0u6uy','+91-98765-43214','919876543214','binal@bnikrypton.com','','Chapter Ambassador. Helping BNI Krypton members maximize their referral networking success.','Binal Vaidya acts as the Chapter Ambassador for BNI Krypton, facilitating training sessions and mentoring members to fully utilize the power of BNI network.','',NULL,'/uploads/members/binal-vaidya-1780129010783.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'SUPPORT',1,'2026-05-29 10:42:16.908','2026-05-30 09:28:05.201',NULL),('cmpqsltxt002w9oqsyrpffcr2','Abhishek S Raut','abhishek-s-raut','Pinakk digital media','cmpqslttv00009oqsadikzbqq','+91-80871-75404','918087175404','pinakkdigitalmedia@gmail.com','https://www.pinakkdigitalmedia.in','I am Abhishek from Pinakk Digital Media, bringing over a decade of expertise in 3D visualization, animation, and motion graphics services. We deliver photorealistic renderings and dynamic animated content for projects ranging from premium real estate to major infrastructure like the Nagpur Metro.','I am Abhishek from Pinakk Digital Media, bringing over a decade of expertise in 3D visualization, animation, and motion graphics services. We deliver photorealistic renderings and dynamic animated content for projects ranging from premium real estate to major infrastructure like the Nagpur Metro.','Uday Nager, Nagpur',NULL,'/uploads/members/abhishek-s-raut-1780118537012.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'MEMBER',1,'2026-05-29 10:42:16.913','2026-05-30 09:28:05.110',NULL),('cmpqsltxu002x9oqss8u9qf68','Ginni Talwaar','ginni-talwaar','Ginni\'s Fashion Studio','cmpqslttz00019oqsm97oxeti','+91-93732-56889','919373256889','ginni@gmail.com','https://ginnisfashion.com','I design customized ladies wear with perfect fitting and elegant styling. I help clients restyle their wardrobe into fresh new looks. I provide stitching, alterations, designer outfits, and fashion consultation.','I design customized ladies wear with perfect fitting and elegant styling. I help clients restyle their wardrobe into fresh new looks. I provide stitching, alterations, designer outfits, and fashion consultation.','Ginni\'s Fashion Studio  Jamuna Society 1 Shop no.5,6  Ambedkar Square  Opposite NIT garden  Near metro pillar no. 49 C.A. Road  Nagpur 440008',NULL,'/uploads/members/ginni-talwaar-1780119308869.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'MEMBER',1,'2026-05-29 10:42:16.914','2026-05-30 09:28:05.142',NULL),('cmpqsltxv002y9oqss6i6akbm','MohanRaj Thangaraj Udayar','mohanraj-thangaraj-udayar','AVM - Advanced Visual Media','cmpqsltu200029oqs5ockrtwj','+91-99222-75217','919922275217','avmadvt@gmail.com','https://www.avmadvt.in','A 360° Branding, Promotion and Advertising Company.','A 360° Branding, Promotion and Advertising Company.','Block No.D, Ground Floor, Opposite Hingna Panchayat Samiti, Hingna.',NULL,'/uploads/members/mohanraj-thangaraj-udayar-1780119662797.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'MEMBER',1,'2026-05-29 10:42:16.915','2026-05-30 09:28:05.158',NULL),('cmpqsltxw002z9oqscamlxq72','Pankaj Pardhi','pankaj-pardhi','Madrox event management','cmpqsltu400039oqsi2w8t6yv','+91-93702-44446','919370244446','madrox.events2012@gmail.com','https://Www.madroxevents.com','I do all kind of corproate events','I do all kind of corproate events','887, karnalbagh road near ganeshpeth',NULL,'/uploads/members/pankaj-pardhi-1780131601131.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,4,'MEMBER',1,'2026-05-29 10:42:16.916','2026-05-30 09:28:05.166',''),('cmpqsltxx00309oqsavbqbhvg','Rajendrra Roy','rajendrra-roy','77 Mishti Associate Land Developer','cmpqsltu600049oqsmkd2a6av','+91-91751-12177','919175112177','rajendraroy34@gmail.com','https://www.77mishtiassociate.com','I help people find good investment properties.','I help people find good investment properties.','4Th Floor Saraf Court Building Opposite Yeshwant Stadium Dhantoli 12',NULL,'/uploads/members/rajendrra-roy-1780120504945.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'MEMBER',1,'2026-05-29 10:42:16.917','2026-05-30 09:28:05.173',NULL),('cmpqsltxz00319oqsgbbp05kx','Rohit Thakur','rohit-thakur','Property Cab','cmpqsltu700059oqs5zcfcro1','+91-73002-30028','917300230028','mr.rohitthakur7@gmail.com','https://www.propertycab.in','I deal in real estate buying, selling, and rentals. I help clients get the best value deals. I make property decisions easy and profitable.','I deal in real estate buying, selling, and rentals. I help clients get the best value deals. I make property decisions easy and profitable.','Wanadongri,  Hingna road , nagpur',NULL,'/uploads/members/rohit-thakur-1780120887366.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,6,'MEMBER',1,'2026-05-29 10:42:16.919','2026-05-30 09:28:05.179',NULL),('cmpqslty100329oqs0nq7symk','Dhawal Jain','dhawal-jain','THE HOTEL MAART','cmpqsltu900069oqsjf6mqw1j','+91-98900-38052','919890038052','dhawaljain.nagpur@gmail.com','https://www.hotelmaart.com','Plan, Setup, Fabricate, Equip and Service Complete Commercial Kitchens for Hotel, Cafe. Resorts and Industries.','Plan, Setup, Fabricate, Equip and Service Complete Commercial Kitchens for Hotel, Cafe. Resorts and Industries.','The Hotel Maart 349, Great Nag Road, Behind Maruti Arya, Ashok Square, Nagpur 440009',NULL,'/uploads/members/dhawal-jain-1780118989930.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'MEMBER',1,'2026-05-29 10:42:16.921','2026-05-30 09:28:05.124',NULL),('cmpqslty300339oqsyfhnmi43','Jitendra roy','jitendra-roy','Nagpur pest management','cmpqsltua00079oqsqlmj26pe','+91-90119-40901','919011940901','nagpurpest.1989@gmail.com','https://Www.nagpurpest.co.in','Secretary / Treasurer of BNI Krypton Nagpur. Owner of Nagpur Pest Management, delivering certified premium hygiene and pest services.','Secretary / Treasurer of BNI Krypton Nagpur. Owner of Nagpur Pest Management, delivering certified premium hygiene and pest services.','Plot no 2 rbi colony friends colony katol road Nagpur',NULL,'/uploads/members/jitendra-roy-1780116451673.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'HEAD_TABLE',1,'2026-05-29 10:42:16.923','2026-05-30 09:28:05.085',NULL),('cmpqslty400349oqslyythtr2','Shahrukh Ansari','shahrukh-ansari','Thundervolt','cmpqsltuc00089oqss9gnst3k','+91-89565-59555','918956559555','shahrukh.aew@gmail.com','https://thundervolts.in','Complete Electrical & Lighting Solutions','Complete Electrical & Lighting Solutions','202 Nikhera Apartment Byramji Town Nagpur 440001',NULL,'/uploads/members/shahrukh-ansari-1780131653067.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'MEMBER',1,'2026-05-29 10:42:16.924','2026-05-30 09:28:05.202',''),('cmpqslty500359oqs7n2ec0lp','Abhinav Bute','abhinav-bute','Aviija Media','cmpqsltue00099oqs5zmz5rcn','+91-78880-70654','917888070654','buteabhinav@gmail.com','https://www.aviijamedia.com','We deliver celebrity self-shot videos and influencer marketing campaigns that make brands go viral and build instant credibility. Through strategic collaborations and content distribution, we turn attention into real engagement and conversions. We amplify brand authority with digital PR and news features across top media platforms to position you as a market leader.','We deliver celebrity self-shot videos and influencer marketing campaigns that make brands go viral and build instant credibility. Through strategic collaborations and content distribution, we turn attention into real engagement and conversions. We amplify brand authority with digital PR and news features across top media platforms to position you as a market leader.','185 Shilpa society Manish nagar opp ICICI bank Nagpur',NULL,'/uploads/members/abhinav-bute-1780118457370.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,4,'MEMBER',1,'2026-05-29 10:42:16.925','2026-05-30 09:28:05.105',NULL),('cmpqslty600369oqs7ilq1m5c','Aadiitya P Raicch','aadiitya-p-raicch','Sai Enterprises- The Paint Company','cmpqsltug000a9oqsp9cbv98m','+91-84464-97541','918446497541','raich.aditya@gmail.com','https://www.coatingwala.com','Manufacture top notch quality paints, Limebase paints, industrial paints','Manufacture top notch quality paints, Limebase paints, industrial paints','548, Abhyankar road, beside Central bank, Dhantoli, Nagpur 440012',NULL,'/uploads/members/aadiitya-p-raicch-1780130671476.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'MEMBER',1,'2026-05-29 10:42:16.926','2026-05-30 09:28:05.095',NULL),('cmpqslty800379oqs57s19k2f','Jonath Ramteke','jonath-ramteke','JNR Electricals and Contractors','cmpqsltui000b9oqsxhdx6b20','+91-98901-90911','919890190911','jnrelectricals11@gmail.com','https://Www.intellectuals.com','We Provide electrical services.','We Provide electrical services.','Ram nagar Nagpur',NULL,'/uploads/members/jonath-ramteke-1780132250105.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'MEMBER',1,'2026-05-29 10:42:16.928','2026-05-30 09:28:05.146',''),('cmpqslty900389oqs59ea82jz','Dr. Khushboo Manan Murarka','dr-khushboo-manan-murarka','Arogyada Wellness','cmpqsltuj000c9oqsep0r0tja','+91-98901-22088','919890122088','arogyadawellness@gmail.com','https://www.arogyada.com','Lead Visitor Host of BNI Krypton Nagpur. Renowned Homoeopath providing elite health and holistic wellness solutions.','Lead Visitor Host of BNI Krypton Nagpur. Renowned Homoeopath providing elite health and holistic wellness solutions.','Pratibha sankul North ambazari road near alankar theatre nagpur',NULL,'/uploads/members/dr-khushboo-manan-murarka-1780116421325.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,4,'HEAD_TABLE',1,'2026-05-29 10:42:16.929','2026-05-30 13:59:04.761',''),('cmpqsltya00399oqsb31wf74m','Kiran behare','kiran-behare','Tk Behhare Construction','cmpqsltum000d9oqsv3i7w15c','+91-97665-93349','919766593349','kbehare2@gmail.com','https://Behareconstructions.com','We do residential, commercial and industrial buildings.','We do residential, commercial and industrial buildings.','201.amey tower , dhantoli ,Nagpur',NULL,'/uploads/members/kiran-behare-1780131547416.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'MEMBER',1,'2026-05-29 10:42:16.930','2026-05-30 09:28:05.149',''),('cmpqsltya003a9oqswcrfmdwn','Nikhil Chimurkar','nikhil-chimurkar','Newedge ventures Distribution private limited','cmpqsltuo000e9oqswcmojdja','+91-93723-90958','919372390958','newedgeventures99@gmail.com','https://Newedgeventures.com','Financial planning,Retirement planning, create monthly income for client through Mutual Fund','Financial planning,Retirement planning, create monthly income for client through Mutual Fund','Chimurkar girls hostel 900 Khare town dharampeth Nagpur 10',NULL,'/uploads/members/nikhil-chimurkar-1780131577598.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'MEMBER',1,'2026-05-29 10:42:16.930','2026-05-30 09:28:05.163',''),('cmpqsltyd003b9oqsiv3r03wr','Aamogh Vyas','aamogh-vyas','Serenity Enterprises By Sleek Kitchen Studio Asian Paint Ltd.','cmpqsltup000f9oqs8f1eu98q','+91-97666-35472','919766635472','amoghv193@gmail.com',NULL,'Serenity Enterprises specializes in designing and delivering premium modular kitchens and customized wardrobes. We focus on creating stylish, functional, and space-efficient interiors tailored to each client’s lifestyle and needs. From concept to execution, we provide complete solutions including design consultation, high-quality materials, and seamless installation. Our goal is to enhance everyday living by combining aesthetics, innovation, and durability in every project.','Serenity Enterprises specializes in designing and delivering premium modular kitchens and customized wardrobes. We focus on creating stylish, functional, and space-efficient interiors tailored to each client’s lifestyle and needs. From concept to execution, we provide complete solutions including design consultation, high-quality materials, and seamless installation. Our goal is to enhance everyday living by combining aesthetics, innovation, and durability in every project.','Serenity Enterprises By Sleek Kitchen Studio Plot no 2 Vijayand Society Narendra Nagar Nagpur 440015',NULL,'/uploads/members/aamogh-vyas-1780118387543.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'MEMBER',1,'2026-05-29 10:42:16.933','2026-05-30 09:28:05.101',NULL),('cmpqsltyi003c9oqsu4f3u1g4','Amit Mahajan','amit-mahajan','Matri Globe ind pvt ltd','cmpqsltuq000g9oqs978prn0z','+91-96739-96348','919673996348','amitmatriglobe08@gmail.com',NULL,'Verified BNI Krypton professional in the Biofuel category.','Verified BNI Krypton professional in the Biofuel category.','Dharampeth Nagpur',NULL,'/uploads/members/amit-mahajan-1780118655158.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'MEMBER',1,'2026-05-29 10:42:16.938','2026-05-30 09:28:05.117',NULL),('cmpqsltyk003d9oqs4binhhal','Balendra Mishra','balendra-mishra','FinTax Acoounitng and Tax Services','cmpqsltus000h9oqs10mzqckw','+91-95614-42574','919561442574','balendraca@gmail.com',NULL,'Accounting support to maintain proper accounts, understand profit, handle taxation, and be ready for audit. GST filing and compliance help. Income Tax return filing assistance.','Accounting support to maintain proper accounts, understand profit, handle taxation, and be ready for audit. GST filing and compliance help. Income Tax return filing assistance.','Vijayanand Society Narendra Nagar Nagpur-440015',NULL,'/uploads/members/balendra-mishra-1780118959743.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'MEMBER',1,'2026-05-29 10:42:16.940','2026-05-30 09:28:05.122',NULL),('cmpqsltyl003f9oqsq0ecoocj','Kapil Maheshwari','kapil-maheshwari','V S CAR CARE','cmpqsltuv000j9oqsr1w4f9di','+91-98817-23837','919881723837','kapilmaheshwari628@gmail.com','https://vscarcarengp@gmail.com','We do car service and accident work','We do car service and accident work','Besa Nagpur',NULL,'/uploads/members/kapil-maheshwari-1780119463791.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'MEMBER',1,'2026-05-29 10:42:16.941','2026-05-30 09:28:05.147',NULL),('cmpqsltym003g9oqscw6eeokl','Maneesh Godre','maneesh-godre','The Arvind Mills Showroom','cmpqsltux000k9oqstog505qq','+91-94221-01218','919422101218','maneeshpri@yahoo.com','https://the_arvindstore_manishnagar','Provide wide Range of Fabric, We do Customized Stitching, provide USPolo and Arvind’s Readymade','Provide wide Range of Fabric, We do Customized Stitching, provide USPolo and Arvind’s Readymade','17, Shilpa society, Manishnagar, Nagpur',NULL,'/uploads/members/maneesh-godre-1780119594394.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,6,'MEMBER',1,'2026-05-29 10:42:16.942','2026-05-30 09:28:05.155',NULL),('cmpqsltyn003h9oqsk4ku2r5m','Prashant Gupta','prashant-gupta','Infinety Solutions','cmpqsltuz000l9oqswtbvoqvn','+91-98237-89178','919823789178','prashant.j.gupta@gmail.com',NULL,'I am Bank Loan consultant help to get best loan deals from Nationalised and Private Banks for Home Loans, Car Loans New and Used, Mortgage Loans and Education Loans.','I am Bank Loan consultant help to get best loan deals from Nationalised and Private Banks for Home Loans, Car Loans New and Used, Mortgage Loans and Education Loans.','501, Honey Roma Apartment, Mohan Nagar, Nagpur',NULL,'/uploads/members/prashant-gupta-1780119994401.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,7,'MEMBER',1,'2026-05-29 10:42:16.943','2026-05-30 09:28:05.169',NULL),('cmpqsltyr003i9oqsx6bw1q5b','PRATIK JAISING BHOSALE','pratik-jaising-bhosale','FACADE & FLOORS','cmpqsltv0000m9oqsjsk0k6g8','+91-77740-50997','917774050997','sales.facades@gmail.com',NULL,'Vice President of BNI Krypton Nagpur. Leading Facade Contractor providing high-end structural facades and engineering solutions.','Vice President of BNI Krypton Nagpur. Leading Facade Contractor providing high-end structural facades and engineering solutions.','PLOT NO 17, MATRUCHAYA, BEHIND INDIAN OIL PETROL PUMP,ABHYANKAR NAGAR,NAGPUR-440010',NULL,'/uploads/members/pratik-jaising-bhosale-1780116493055.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'HEAD_TABLE',1,'2026-05-29 10:42:16.947','2026-05-30 09:28:05.091',NULL),('cmpqsltys003j9oqsx4prwwge','Praveen P Ssharma','praveen-p-ssharma','IBIA INDUSTRIAL BATTERIES PRIVATE LIMITED','cmpqsltv2000n9oqswim6q3v3','+91-98230-70911','919823070911','ibi.nagpur@gmail.com',NULL,'We ensure you are never out of power, be it Industries or Home.','We ensure you are never out of power, be it Industries or Home.','Shop no. 3, Laxmi Niwas, Mecosabagh, Nagpur 440017',NULL,'/uploads/members/praveen-p-ssharma-1780120173028.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,9,'MEMBER',1,'2026-05-29 10:42:16.948','2026-05-30 09:28:05.171',NULL),('cmpqsltyt003k9oqsl506xh68','Rohit  Chidam','rohit-chidam','Recon Solution ( Fire & Safety Equipment)','cmpqsltv4000o9oqswlwm34st','+91-86573-98360','918657398360','reconsolution6@gmail.com','','Fire safety solution','Fire safety solution','Omkar nagar sqr, nagpur',NULL,'/uploads/members/rohit-chidam-1780132355717.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,10,'MEMBER',1,'2026-05-29 10:42:16.949','2026-05-30 09:28:05.176',''),('cmpqsltyu003l9oqs6jkw3qec','Rohit Shete','rohit-shete','CARS & Co','cmpqsltv6000p9oqsy4xejysh','+91-81491-82940','918149182940','rohitshete@gmail.com','https://I don’t have a website currently','I manage your gst and income tax assessment and appeal cases with tax department and high court','I manage your gst and income tax assessment and appeal cases with tax department and high court','2, Universal meadows, New Sneh Nagar, Near Radisson Blu hotel, Nagpur 440025',NULL,'/uploads/members/rohit-shete-1780120775720.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,11,'MEMBER',1,'2026-05-29 10:42:16.950','2026-05-30 09:28:05.178',NULL),('cmpqsltyv003m9oqsj1q1hnpx','Saddam Ansari','saddam-ansari','SD FASHION WORLD','cmpqsltv8000q9oqsbierbuo8','+91-84462-33362','918446233362','saddam-ansari@bnikrypton.com','https://.','I chance life of people ,From 😢 to happy 😃 ,By changing their dressing style','I chance life of people ,From 😢 to happy 😃 ,By changing their dressing style','Pillar number -6 ,Vaishno Devi square (Wardhman nagar ) nagar',NULL,'/uploads/members/saddam-ansari-1780149652824.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,12,'MEMBER',1,'2026-05-29 10:42:16.951','2026-05-30 14:00:54.810',''),('cmpqsltyw003n9oqs0g4nbn4m','Shubham Chourewar','shubham-chourewar','Space Outdoor Advertising','cmpqsltv9000r9oqs17ugfm3q','+91-94231-04927','919423104927','shubhamc25@gmail.com','https://.','We provide Outdoor advertising spaces in Nagpur and whole of Vidarbha','We provide Outdoor advertising spaces in Nagpur and whole of Vidarbha','Plot no. 228, Flat no. F-1, Shree Laxmi apartment, zenda chowk, Dharampeth, Nagpur 440010',NULL,'/uploads/members/shubham-chourewar-1780121094529.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,13,'MEMBER',1,'2026-05-29 10:42:16.952','2026-05-30 09:28:05.185',NULL),('cmpqsltyx003o9oqsdt3nxogc','Smita tijare','smita-tijare','Creations Art Gallery','cmpqsltva000s9oqs3elrlmh8','+91-98225-77725','919822577725','creationsartgallery@gmail.com','https://creationsartgallery@gmail.com','I’m Smita Tijare from Creations Art Gallery. I create customized paintings and wall art for homes and offices. I help turn simple spaces into beautiful, artistic areas.','I’m Smita Tijare from Creations Art Gallery. I create customized paintings and wall art for homes and offices. I help turn simple spaces into beautiful, artistic areas.','Creations Art Gallery, Brijdham Apaetments, First floor, Chappru Square, C. A. Road, Nagpur',NULL,'/uploads/members/smita-tijare-1780121150929.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,14,'MEMBER',1,'2026-05-29 10:42:16.953','2026-05-30 09:28:05.187',NULL),('cmpqsltyz003p9oqsc4qh4zxt','Sneha dorlikar','sneha-dorlikar','Fahrenhite',NULL,'+91-99603-15492','919960315492','fahrenhitehealthcare@gmail.com',NULL,'End to end healthcare solution','End to end healthcare solution','Lokmat square above metro scan',NULL,'/uploads/members/sneha-dorlikar-1780121183900.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,15,'MEMBER',1,'2026-05-29 10:42:16.955','2026-05-30 09:28:05.189',NULL),('cmpqsltz0003q9oqszfawgtdj','Namita Bakanne','namita-bakanne','MindDful Vastu','cmpqsltvc000t9oqs7dpk67v5','+91-97662-24007','919766224007','namitabakane@gmail.com',NULL,'I help people to be aware with vastu shastra to make their life easy and productive','I help people to be aware with vastu shastra to make their life easy and productive','Opposite yashwant stadium',NULL,'/uploads/members/namita-bakanne-1780119800722.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,16,'MEMBER',1,'2026-05-29 10:42:16.956','2026-05-30 09:28:05.161',NULL),('cmpqsltz1003r9oqsus4oirkp','Mariyam husain','mariyam-husain','Mb travels and tours','cmpqsltvd000u9oqs3xdh5hzc','+91-98603-42252','919860342252','mariyam4u@gmail.com','https://No website','We do corporate tickets domestic and international passport and visa assistance','We do corporate tickets domestic and international passport and visa assistance','1st floor hutaib tower behind agrasen square metro station',NULL,'/uploads/members/mariyam-husain-1780119616629.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,17,'MEMBER',1,'2026-05-29 10:42:16.957','2026-05-30 09:28:05.156',NULL),('cmpqsltz2003s9oqsj3jv9ox8','Sunil Jangid','sunil-jangid','Mamta Aluminum and glass house','cmpqsltvf000v9oqsoc5rks47','+91-94221-22788','919422122788','maghnagpur@gmail.com',NULL,'Decorative Glass, toughened glass work, slim profile sliding system, openable glass window and partitions.','Decorative Glass, toughened glass work, slim profile sliding system, openable glass window and partitions.','Shop no 09, Ganga complex, Ganeshpeth, Nagpur',NULL,'/uploads/members/sunil-jangid-1780121199292.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,18,'MEMBER',1,'2026-05-29 10:42:16.958','2026-05-30 09:28:05.190',NULL),('cmpqsltz3003t9oqsbr2wg9dw','Rekha jangid','rekha-jangid','Lic','cmpqsltvi000w9oqs7wc8cqbv','+91-95794-87807','919579487807','licnagpur.rekha@gmail.com','https://Shyre.rekhajangir','All type insurance solution and Best service in income replacement and secured your family always..','All type insurance solution and Best service in income replacement and secured your family always..','Wardhaman nagar ,Honey indra tower, 3rd floor. Nagpur',NULL,'/uploads/members/rekha-jangid-1780120581300.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,19,'MEMBER',1,'2026-05-29 10:42:16.959','2026-05-30 09:28:05.175',NULL),('cmpqsltz4003u9oqsxrwc4x9y','Yash Gandhi','yash-gandhi','Gandhi Furniture','cmpqsltvj000x9oqsykznbrak','+91-82377-38523','918237738523','yashgandhijain999@gmail.com','https://www.gandhifurniture.in','I am Manufacture, Supplier, Wholesaler, and Retailer of quality commercial furniture. My range includes Executive chairs, Tables, Waiting Chairs, Restaurant seating, Bar stools, Steel Almirahs and all types of Commercial Furniture. I help businesses create comfortable, durable, and professional spaces.','I am Manufacture, Supplier, Wholesaler, and Retailer of quality commercial furniture. My range includes Executive chairs, Tables, Waiting Chairs, Restaurant seating, Bar stools, Steel Almirahs and all types of Commercial Furniture. I help businesses create comfortable, durable, and professional spaces.','118-119, Near ADN Hospital, Bhavani Mata Mandir Road, Pardi, Nagpur, Maharashtra - 440035',NULL,'/uploads/members/yash-gandhi-1780121277673.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,999,'MEMBER',1,'2026-05-29 10:42:16.960','2026-05-30 09:28:05.193',NULL),('cmpqsltz5003v9oqsucgwrt4w','VAIIBHAV LICHHADE','vaiibhav-lichhade','Yashodaa trader','cmpqsltvl000y9oqs1327b9dl','+91-80554-79192','918055479192','vaibhavlichade01@gmail.com','https://yashodatraders.netlify.app','Maximum refferal chapter members','Maximum refferal chapter members','8/9 vakradant so khadgao road wadi Nagpur',NULL,'/uploads/members/vaiibhav-lichhade-1780132174116.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,999,'MEMBER',1,'2026-05-29 10:42:16.961','2026-05-30 09:28:05.191',''),('cmpqsltz6003w9oqsm2gjp3q4','Dr. Richa Zararieya','dr-richa-zararieya','Beautiphi Esthetique Clinics','cmpqsltvn000z9oqs3k4tsvha','+91-73870-09989','917387009989','mehtaricha11@gmail.com','https://beautiphiclinc.com','Skin And Hair Doctor , Hair Transplant Surgeon, Anti Aging Expert','Skin And Hair Doctor , Hair Transplant Surgeon, Anti Aging Expert','Beautiphi Esthetique Clinics 57 central Bazar Road Bajaj Nagpur, Near Ashirwad Silvers',NULL,'/uploads/members/dr-richa-zararieya-1780119124674.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,7,'MEMBER',1,'2026-05-29 10:42:16.962','2026-05-30 13:59:31.895',''),('cmpqsltz7003x9oqsv2uqzz7q','Abhay Tembhurne','abhay-tembhurne','ABHAY TEMBHURNE','cmpqsltvo00109oqs8ag7rr61','+91-93710-58991','919371058991','abhaytembhurne@gmail.com','https://abhaytembhurne.in','Land Surveying, Soil Testing, Physical verification of the bulk materials, Chartered Engineer Certification, Government Registered Valuer','Land Surveying, Soil Testing, Physical verification of the bulk materials, Chartered Engineer Certification, Government Registered Valuer','Plot No 132 Laghuvetan Colony Kamptee Road Nagpur 440014',NULL,'/uploads/members/abhay-tembhurne-1780118432798.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'MEMBER',1,'2026-05-29 10:42:16.963','2026-05-30 09:28:05.103',NULL),('cmpqsltz8003y9oqs0lvvk1j1','Abhishek Ghatode','abhishek-ghatode','The Insignia Consultant (Netinsignia Consultant Pvt Ltd)','cmpqsltvp00119oqsvrp21oun','+91-98810-76668','919881076668','abhishek.ghatode@gmail.com','https://www.theinsigniac.com','360° Digital Marketing and Branding Solution. Performance Marketing. Social Media Marketing, SEO, Local SEO, Google AdWords, Youtube Ads','360° Digital Marketing and Branding Solution. Performance Marketing. Social Media Marketing, SEO, Local SEO, Google AdWords, Youtube Ads','2nd floor, 68, Sawarkar Nagar, Chhatrapati Square, Nagpur, 44015',NULL,'/uploads/members/abhishek-ghatode-1780118478452.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'MEMBER',1,'2026-05-29 10:42:16.964','2026-05-30 09:28:05.108',NULL),('cmpqsltz9003z9oqs25kf8qhp','Akshaay Konddawar','akshaay-konddawar','Central India Trade Links','cmpqsltvq00129oqsnwe3kx62','+91-98603-36262','919860336262','mktcitl14@gmail.com','https://www.citlnagpur.com','We specialize in fire-rated doors and garbage chute systems for residential and commercial projects. We deliver quality products with a focus on safety, compliance, and durability. Our goal is to provide reliable solutions with timely execution.','We specialize in fire-rated doors and garbage chute systems for residential and commercial projects. We deliver quality products with a focus on safety, compliance, and durability. Our goal is to provide reliable solutions with timely execution.','Shop 4, Atharva Residency, Dabha Rd, beside water tank, Vayusena Nagar, Nagpur, Maharashtra 440023',NULL,'/uploads/members/akshaay-konddawar-1780118583633.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'MEMBER',1,'2026-05-29 10:42:16.965','2026-05-30 09:28:05.113',NULL),('cmpqsltza00409oqs9e0gg0q9','ANIL NAGWANI','anil-nagwani','ANIL GRANITE & TILES','cmpqsltvr00139oqsl2haumpw','+91-98226-96781','919822696781','nagwanianil8@gmail.com','https://www.anilgranitetiles.com','LONG RANGE TILES IN ONE ROUGH/BEST COLLECTION/ BIGGEST DISPLAY CENTER','LONG RANGE TILES IN ONE ROUGH/BEST COLLECTION/ BIGGEST DISPLAY CENTER','Plot no-15,near Kushi nagar sai mandir square ring road Jaripatka',NULL,'/uploads/members/anil-nagwani-1780131457548.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,4,'MEMBER',1,'2026-05-29 10:42:16.966','2026-05-30 09:28:05.120',''),('cmpqsltzb00419oqs6wskdv2p','Doc Aliakbbar Maimun','doc-aliakbbar-maimun','EnergySense Center for Advanced Mind Health','cmpqsltvs00149oqssdrggswc','+91-70382-82192','917038282192','hey@energysense.in','https://www.aliakbbarmaimun.in','President of BNI Krypton Nagpur. Experienced Business Coach guiding premium corporate leadership and executive strategy.','President of BNI Krypton Nagpur. Experienced Business Coach guiding premium corporate leadership and executive strategy.','MHKS Spaces, office No.3, 4th floor, Near Mental Hospital Sq, Nagpur 440013.',NULL,'/uploads/members/doc-aliakbbar-maimun-1780116323059.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'HEAD_TABLE',1,'2026-05-29 10:42:16.967','2026-05-30 09:28:05.074',NULL),('cmpqsltzc00429oqsw8t553uh','Dr. Parag Raut','dr-parag-raut','Raut nursing Home','cmpqsltvt00159oqstsjp0i30','+91-96733-22323','919673322323','dr-parag-raut@bnikrypton.com','https://www.rautnursinghome.com','I am orthopedic surgeon with speciality in joint replacement and spine surgery.','I am orthopedic surgeon with speciality in joint replacement and spine surgery.','11, Shankar Nagar WHC road near equitas bank nagpur',NULL,'/uploads/members/dr-parag-raut-1780119251770.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,6,'MEMBER',1,'2026-05-29 10:42:16.968','2026-05-30 09:28:05.138',NULL),('cmpqsltzd00439oqs1qzixxcr','HRUSHIKESH Kale','hrushikesh-kale','Pranamya Financial Services','cmpqsltvu00169oqs1sqfqxpo','+91-93700-07770','919370007770','hrushikesh@pranamnya.in','https://www.pranamya.in','Financial consultants without selling anything','Financial consultants without selling anything','310, 3rd Floor, K10 corporate,jp nagar, Nagpur',NULL,'/uploads/members/hrushikesh-kale-1780132384768.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,7,'MEMBER',1,'2026-05-29 10:42:16.969','2026-05-30 09:28:05.144',''),('cmpqsltze00449oqsvs2p2trb','Kkunal P Kawwale','kkunal-p-kawwale','Sagar Jewellers','cmpqsltvw00179oqsdx43i0nw','+91-87931-19291','918793119291','kunalkk36@gmail.com','https://Sagarjewellers.co.in','I am Into Manufacturing of Gold and Silver Articles, Raw Bullion gold and silver supply across central India .','I am Into Manufacturing of Gold and Silver Articles, Raw Bullion gold and silver supply across central India .','Itwari Sarafa Market , Nagpur',NULL,'/uploads/members/kkunal-p-kawwale-1780119551168.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,8,'MEMBER',1,'2026-05-29 10:42:16.970','2026-05-30 09:28:05.151','Mentor Co-ordinator'),('cmpqsltze00459oqs9y7jbg6b','Kushal Kotecha','kushal-kotecha','Mahavir Mevawala Private Limited','cmpqsltvw00189oqs4lbzm7zd','+91-84466-79491','918446679491','kushalkotecha28@gmail.com','https://mahavirmevawala.in','Quality Dry Fruits, Dry Fruits Boxes','Quality Dry Fruits, Dry Fruits Boxes','1, Panchsheel cinema building, Wardha Road, Ramdaspeth, Nagpur',NULL,'/uploads/members/kushal-kotecha-1780119571300.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,9,'MEMBER',1,'2026-05-29 10:42:16.970','2026-05-30 09:28:05.153',NULL),('cmpqsltzg00479oqssfxgygja','Nitin Patel','nitin-patel','Deetya… All About Interiors','cmpqsltvz001a9oqs7bttcuh1','+91-98602-98745','919860298745','deetyanagpur@gmail.com','https://www.deetyaa.com','We help you craft your dream space with a curated selection of premium veneers, laminates, and highlighters, alongside high-quality plywood, boards and hardware - Architectural & Decorative. From foundation to finish, we are your comprehensive, one-stop destination for all carpentry and interior essentials.','We help you craft your dream space with a curated selection of premium veneers, laminates, and highlighters, alongside high-quality plywood, boards and hardware - Architectural & Decorative. From foundation to finish, we are your comprehensive, one-stop destination for all carpentry and interior essentials.','J & H Inc., Plot No. 44-45, Old Bhandara Road, Near Lakadgunj Police Station, Lakadgunj, Nagpur - 440008',NULL,'/uploads/members/nitin-patel-1780119857342.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,11,'MEMBER',1,'2026-05-29 10:42:16.972','2026-05-30 09:28:05.164','Events Co-ordinator'),('cmpqsltzh00489oqsi9duy6w5','Raj Verma','raj-verma','Abatech Solutionz','cmpqsltw1001b9oqsm9bzrtds','+91-98300-81122','919830081122','abatechcal@gmail.com','https://abatechcal.com','We develop online application Solutions to automate your husinesa operations','We develop online application Solutions to automate your husinesa operations','Mihan, Nagpur.',NULL,'/uploads/members/raj-verma-1780120321486.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,12,'MEMBER',1,'2026-05-29 10:42:16.973','2026-05-30 09:28:05.172',NULL),('cmpqsltzi00499oqsy4pyj8uo','Sagar Gokhale','sagar-gokhale','Gokhale Insurance & Investments','cmpqsltw2001c9oqsf7szsqjg','+91-99230-86394','919923086394','sagargokhale007@gmail.com','https://www.gokhales.in','We offer expert solutions in Individual and Group Health, as well as Personal Accident Insurance, thoughtfully designed to safeguard both families and businesses. In addition, we provide a comprehensive portfolio of General Insurance products, including Motor, Fire, Liability, Travel and allied risk covers.','We offer expert solutions in Individual and Group Health, as well as Personal Accident Insurance, thoughtfully designed to safeguard both families and businesses. In addition, we provide a comprehensive portfolio of General Insurance products, including Motor, Fire, Liability, Travel and allied risk covers.','317, Khare Town, Shrikrishna Apartment, Opp. Dhanwantari Heights, Dharampeth, Nagpur -440010',NULL,'/uploads/members/sagar-gokhale-1780120909612.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,13,'MEMBER',1,'2026-05-29 10:42:16.974','2026-05-30 09:28:05.180','Chapter Growth Co-ordinator'),('cmpqsltzj004a9oqsyu9xm5g6','sanket Agrawal','sanket-agrawal','Travel Konnect','cmpqsltw3001d9oqsxhfnjclj','+91-77690-00801','917769000801','sanket@travelkonnect.in','https://www.travelkonnect.in','We deal in all travel related services under 1 roof .. travel packages domestic and international both. Cruises , resorts , helicopters','We deal in all travel related services under 1 roof .. travel packages domestic and international both. Cruises , resorts , helicopters','11, Gazetted officer colony , Ambazhari , Nagpur',NULL,'/uploads/members/sanket-agrawal-1780121007875.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,14,'MEMBER',1,'2026-05-29 10:42:16.975','2026-05-30 09:28:05.182','Events Co-ordinator'),('cmpqsltzk004b9oqskl58ti5v','Sarang Bhingare','sarang-bhingare','S S CONSULTANCY','cmpqsltw4001e9oqsaq7cydlg','+91-98231-33828','919823133828','sarang_bhingare@rediffmail.com','https://ssconsultancy.org','Real estate','Real estate','2nd floor, Ameya tower, opp dinanath high school, dhantoli, Nagpur 440012',NULL,'/uploads/members/sarang-bhingare-1780121035593.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,15,'MEMBER',1,'2026-05-29 10:42:16.976','2026-05-30 09:28:05.183',NULL),('cmpqsltzl004c9oqsbo8olwlm','Shashank Jha','shashank-jha','Weatherblazer India Pvt Ltd','cmpqsltw5001f9oqsco9yxntv','+91-72648-02891','917264802891','shashank@trailblazers.co.in','https://www.weatherblazer.com','Speciality weatherproofing and waterproofing application and products and only company in India which provides absolute warranty in waterproofing.','Speciality weatherproofing and waterproofing application and products and only company in India which provides absolute warranty in waterproofing.','166, Near Maratoli Playground. Ramnagar',NULL,'/uploads/members/shashank-jha-1780131749815.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,16,'MEMBER',1,'2026-05-29 10:42:16.977','2026-05-30 09:28:05.205',''),('cmpqsltzl004d9oqsutgdd887','Siddharth Rathi','siddharth-rathi','Master\'s Engineering','cmpqsltw6001g9oqs63umd43m','+91-83294-36153','918329436153','info@solarmastersengineering.com','https://www.solarmastersengineering.com','Solar Power Generation System design, supply, installation and commissioning. Our systems are equipped with Auto Shower Cleaning System for optimal efficiency in Solar generation.','Solar Power Generation System design, supply, installation and commissioning. Our systems are equipped with Auto Shower Cleaning System for optimal efficiency in Solar generation.','Plot No:48, Sahakar Nagar, Khamla Road, Nagpur 440025.',NULL,'/uploads/members/siddharth-rathi-1780121125120.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,17,'MEMBER',1,'2026-05-29 10:42:16.977','2026-05-30 09:28:05.186',NULL),('cmpqsltzm004e9oqs44kye407','Vishwanath Joshi','vishwanath-joshi','V R J Incorporation','cmpqsltw7001h9oqsgjsvsqwo','+91-84119-42223','918411942223','vrjinncorporation@gmail.com','https://www.puritas.in','We are into the Manufacturing, R&D and Exports of Nutraceuticals, Pharmaceuticals and Hydraulically Cold Pressed Edible Oils which are Pharma grade edible oils.','We are into the Manufacturing, R&D and Exports of Nutraceuticals, Pharmaceuticals and Hydraulically Cold Pressed Edible Oils which are Pharma grade edible oils.','Five-Star Industrial Area, M.I.D.C Butibori, Nagpur.',NULL,'/uploads/members/vishwanath-joshi-1780121249420.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,18,'MEMBER',1,'2026-05-29 10:42:16.978','2026-05-30 09:28:05.192',NULL),('cmpqsltzn004f9oqs6i48hd5b','Dr. Sandeep Iratwar','dr-sandeep-iratwar','Neurological Surgeon','cmpqsltw8001i9oqs8p9eiy6p','+91-77748-86238','917774886238','s.iratwar@gmail.com','https://WWW.drsandeepiratwar.com','I do brain and spine surgery. I treat neurological disorders. I help people re live their lives by doing successful treatment.','I do brain and spine surgery. I treat neurological disorders. I help people re live their lives by doing successful treatment.','Director, Neurosurgery. Max Super Specialty Hospital, Mankapur, Nagpur',NULL,'/uploads/members/dr-sandeep-iratwar-1780119153874.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,19,'MEMBER',1,'2026-05-29 10:42:16.979','2026-05-30 13:59:43.257','Education Co-ordinator'),('cmpqsltzo004g9oqsw66bhcay','Dr. ABHAY GHODKHANDE','dr-abhay-ghodkhande','KUSUM MULTISPECIALITY DENTAL CLINIC','cmpqsltw9001j9oqsh7ww0yfi','+91-94224-63629','919422463629','abhayghodkhande76@gmail.com','https://www.kusumdentalclinic.com','I help people restore and enhance their smiles. I treat dental problems with precision and care. I focus on long-term oral health and confidence','I help people restore and enhance their smiles. I treat dental problems with precision and care. I focus on long-term oral health and confidence','Shop no 2,3, Agnirath sankul, Behind amrut lawn,Manish Nagar, Nagpur',NULL,'/uploads/members/dr-abhay-ghodkhande-1780119095115.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,20,'MEMBER',1,'2026-05-29 10:42:16.980','2026-05-30 13:58:53.881',''),('cmpqsltzp004h9oqsso8i2rmv','Amit Eknath Mandwe','amit-eknath-mandwe','PM INDUSTRIES','cmpqsltwa001k9oqsdyl3vo63','+91-88304-31557','918830431557','amitmandwe26@gmail.com','https://www.cementpipenagpur.com','Manufacturing rcc cement pipes','Manufacturing rcc cement pipes','At post malni, Tah- Kuhi, Nagpur',NULL,'/uploads/members/amit-eknath-mandwe-1780118627016.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,21,'MEMBER',1,'2026-05-29 10:42:16.981','2026-05-30 09:28:05.115',NULL),('cmpqsltzr004i9oqsk0ofbfpc','NISHANT BARDE','nishant-barde','eLan Technology','cmpqsltwb001l9oqs1c2qrcjc','+91-87888-34630','918788834630','elantech@gmail.com','https://elan-tech.net/','eLan Technology is your online growth partner. Since 2004, we\'ve helped 500+ businesses across 10+ countries grow through custom web design, applications, and eCommerce solutions that perform, protect, and scale. We keep websites healthy with ongoing maintenance, run deep security audits, and tune page speed for faster loads and better rankings. Need WCAG 2.1 AA and ADA compliance? We offer accessibility as an add-on service to make your site inclusive and legally protected. Your online growth partner. Built. Secured. Fast.','eLan Technology is your online growth partner. Since 2004, we\'ve helped 500+ businesses across 10+ countries grow through custom web design, applications, and eCommerce solutions that perform, protect, and scale. We keep websites healthy with ongoing maintenance, run deep security audits, and tune page speed for faster loads and better rankings. Need WCAG 2.1 AA and ADA compliance? We offer accessibility as an add-on service to make your site inclusive and legally protected. Your online growth partner. Built. Secured. Fast.','Basement Floor, PTG IT Park Plot No. 21, IT Park Rd, Gayatri Nagar Nagpur, - 440022',NULL,'/uploads/members/nishant-barde-1780149439528.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,22,'MEMBER',1,'2026-05-29 10:42:16.983','2026-05-30 13:57:21.753','Voice Relay Co-ordinator'),('cmpqsltzr004j9oqsr87f1sm3','Dr. Shamik Mokadam','dr-shamik-mokadam','Anjani Eye Hospital','cmpqsltwc001m9oqs7hat6mnm','+91-78755-54968','917875554968','drshamik@gmail.com','https://Anjanieyehospital.org','I am an eye doctor, vitreo-retinal surgeon treating people with common eye conditions like cataract, diabetic retinopathy, age related macular degeneration, glaucoma, refractive errors and laser correction of eye glasses','I am an eye doctor, vitreo-retinal surgeon treating people with common eye conditions like cataract, diabetic retinopathy, age related macular degeneration, glaucoma, refractive errors and laser correction of eye glasses','Anjani Eye Hospital, 20, Farmland, New Ramdaspeth, central bazaar road, Nagpur',NULL,'/uploads/members/dr-shamik-mokadam-1780119184450.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,23,'MEMBER',1,'2026-05-29 10:42:16.983','2026-05-30 13:59:22.298',''),('cmpqsltzs004k9oqsrr4x07z0','Prasad P. Pophali','prasad-p-pophali','Primeray Interiors','cmpqsltwd001n9oqsicxynpe2','+95003349429','95003349429','praimeray@gmail.com','https://www.primerayinteriors.in','Trunkey Interior\'s, Bunglow Interiors, Renovations','Trunkey Interior\'s, Bunglow Interiors, Renovations','Manewada, Nagpur',NULL,'/uploads/members/prasad-p-pophali-1780119963938.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'MEMBER',1,'2026-05-29 10:42:16.984','2026-05-30 09:28:05.167',NULL),('cmpqsltzt004l9oqs5phgdviz','Dr. Jageshwar Dodake','dr-jageshwar-dodake','Alliance Diagnostic Centre','cmpqsltwf001o9oqse3s7zti9','+91-97650-40535','919765040535','alliancedcnagpur@gmail.com','https://wwwallianceClinic.in','Full body health checkup with free door visit and corporate camp also','Full body health checkup with free door visit and corporate camp also','Medical square, above Lenskart shop,untkhana square,nagpur',NULL,'/uploads/members/dr-jageshwar-dodake-1780131489087.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,2,'MEMBER',1,'2026-05-29 10:42:16.985','2026-05-30 09:28:05.136',''),('cmpqsltzu004m9oqsbsvyyugl','Zubair pasha','zubair-pasha','Paint craft studio','cmpqsltwg001p9oqs81k4vo1u','+91-88885-73786','918888573786','zubairpasha5857@gmail.com','https://Www.pcs.com','I provide premium paint and wood finishes','I provide premium paint and wood finishes','Paint craft studios',NULL,'/uploads/members/zubair-pasha-1780131790369.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,3,'MEMBER',1,'2026-05-29 10:42:16.986','2026-05-30 09:28:05.207',''),('cmps44o2m0000wnqslokv9z87','Dr. Suresh Bhandarkar','dr-suresh-bhandarkar','Dr. Bhandarkar’s Super Multi- Specialty Ayurvedic Clinic','cmpqsltuu000i9oqs2oskxs29','+91-95402-23929','919540223929','guru_bhandarkar1@yahoo.com','','Chronic illnesses, complicated patients','Chronic illnesses, complicated patients','2202, D-Wing, Jayanti Nagari:7, Besa-Pipla Road Nagpur',NULL,'/uploads/members/dr-suresh-bhandarkar-1780149516531.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,4,'MEMBER',1,'2026-05-30 08:52:37.726','2026-05-30 13:58:38.643',''),('cmps44o410001wnqsjx56jy0c','Mr. Ashissh Bhaudas Lonare','mr-ashissh-bhaudas-lonare','Lotus Care Exim','cmpqsltvy00199oqs0uag4o1i','+91-91586-96996','919158696996','lotuscareexim2023@gmail.com','https://www.lotuscareexim.com','I\'m Merchant Exporter. We Export All Type of Medications (Allopathic, Homeopathic, Ayurvedic, Unani, Veterinary, Surgical, Beauty Products). Also We Export All Typer of Non-perisable Food Items.','I\'m Merchant Exporter. We Export All Type of Medications (Allopathic, Homeopathic, Ayurvedic, Unani, Veterinary, Surgical, Beauty Products). Also We Export All Typer of Non-perisable Food Items.','Flat No.105, First floor, Building No. B-36, Pradhan Mantri Aawas Yojana, Near Symbiosis International University, East Nagpur.',NULL,'/uploads/members/ashissh-bhaudas-lonare-1780120979643.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,10,'MEMBER',1,'2026-05-30 08:52:37.777','2026-05-30 09:28:05.204','Venue Co-ordinator'),('cmps5mhjh000b4gqs82lej727','Nirmit Parekh','nirmit-parekh','Parekh Scientifc Opticals','cmps5m7zi000a4gqs3f29ko55','+91 94051 42808','+919405142808','nirmitparekh0@gmail.com','','Optician','','',NULL,'/uploads/members/member-1780133489705.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,10,'MEMBER',1,'2026-05-30 09:34:28.685','2026-05-30 09:36:10.699',''),('cmpsiz5ka000484qs5tnwkp5e','Vaishno Madne','vaishno-madne','Beyond trends & furnishings','cmpsikloc000084qsr6yixtd3','+917387412189','917387412189','vaishnomadne924@gmail.com','','Home Furnishing Manufacturer','specialize in Wallpaper, Customised Wallpaper, Window Blinds, Customised Window Blinds, Glass Films , Customised Glass Films, Curtains, Sofa Fabric, Mattress, PVC and Wooden Flooring, Carpets , Louvers Panel','Juni Mangalwari, Behind JH Lighting, Kolba Swami Chowk, Metro Pillar-88 , CA Road, Nagpur - 440008',NULL,'/uploads/members/member-1780155875030.avif',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,10,'MEMBER',1,'2026-05-30 15:48:14.698','2026-05-30 15:48:14.698','');
+/*!40000 ALTER TABLE `members` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `otp_tokens`
+--
+
+DROP TABLE IF EXISTS `otp_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `otp_tokens` (
+  `id` varchar(191) NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `token` varchar(10) NOT NULL,
+  `expires` datetime(3) NOT NULL,
+  `used` tinyint(1) NOT NULL DEFAULT '0',
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  KEY `otp_tokens_email_idx` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `otp_tokens`
+--
+
+LOCK TABLES `otp_tokens` WRITE;
+/*!40000 ALTER TABLE `otp_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `otp_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessions` (
+  `id` varchar(191) NOT NULL,
+  `sessionToken` varchar(191) NOT NULL,
+  `userId` varchar(191) NOT NULL,
+  `expires` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sessions_sessionToken_key` (`sessionToken`),
+  KEY `sessions_userId_fkey` (`userId`),
+  CONSTRAINT `sessions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessions`
+--
+
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('cmprv9fku00014jqs9e4ngoet','f3c183b5-4ffc-471c-b5fd-74653d020594','cmppgywsn000051qs2udzw1x0','2026-06-29 04:44:23.453');
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `settings`
+--
+
+DROP TABLE IF EXISTS `settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `settings` (
+  `id` varchar(191) NOT NULL,
+  `key` varchar(191) NOT NULL,
+  `value` text NOT NULL,
+  `updatedAt` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `settings_key_key` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `settings`
+--
+
+LOCK TABLES `settings` WRITE;
+/*!40000 ALTER TABLE `settings` DISABLE KEYS */;
+INSERT INTO `settings` VALUES ('cmpb9dskg000qi0n9640y17je','chapter_name','BNI Krypton','2026-05-30 08:54:12.339'),('cmpb9dskk000ri0n9gn0zgxcr','chapter_city','Nagpur','2026-05-30 08:54:12.339'),('cmppickxj00004hqsvicg3qp1','contact_email','bnikrypton@gmail.com','2026-05-28 13:07:22.999'),('cmppickxm00014hqscg6u840r','contact_phone','+91-98765-43210','2026-05-28 13:07:23.002');
+/*!40000 ALTER TABLE `settings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `testimonials`
+--
+
+DROP TABLE IF EXISTS `testimonials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `testimonials` (
+  `id` varchar(191) NOT NULL,
+  `memberId` varchar(191) NOT NULL,
+  `authorName` varchar(191) NOT NULL,
+  `content` text NOT NULL,
+  `rating` int NOT NULL DEFAULT '5',
+  `isPublic` tinyint(1) NOT NULL DEFAULT '1',
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  KEY `testimonials_memberId_fkey` (`memberId`),
+  CONSTRAINT `testimonials_memberId_fkey` FOREIGN KEY (`memberId`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testimonials`
+--
+
+LOCK TABLES `testimonials` WRITE;
+/*!40000 ALTER TABLE `testimonials` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testimonials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` varchar(191) NOT NULL,
+  `name` varchar(191) DEFAULT NULL,
+  `email` varchar(191) NOT NULL,
+  `emailVerified` datetime(3) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL,
+  `role` enum('ADMIN','MEMBER','PUBLIC') NOT NULL DEFAULT 'MEMBER',
+  `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updatedAt` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_key` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('cmppgywsn000051qs2udzw1x0','Elan Tech Admin','elantech@gmail.com','2026-05-30 04:44:23.448',NULL,'ADMIN','2026-05-28 12:28:45.575','2026-05-30 04:44:23.450');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `verification_tokens`
+--
+
+DROP TABLE IF EXISTS `verification_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `verification_tokens` (
+  `identifier` varchar(191) NOT NULL,
+  `token` varchar(191) NOT NULL,
+  `expires` datetime(3) NOT NULL,
+  UNIQUE KEY `verification_tokens_token_key` (`token`),
+  UNIQUE KEY `verification_tokens_identifier_token_key` (`identifier`,`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `verification_tokens`
+--
+
+LOCK TABLES `verification_tokens` WRITE;
+/*!40000 ALTER TABLE `verification_tokens` DISABLE KEYS */;
+INSERT INTO `verification_tokens` VALUES ('elantech@gmail.com','713e5dc2354751cee8d2deec216a52e527e366e065581a51f3e14cbf454bdbde','2026-05-31 04:43:54.094'),('elantech@gmail.com','80fa59323c2cd7ab75a0469d9496ea3db243464d845ee677d4b490f58e76e063','2026-05-30 10:48:18.527');
+/*!40000 ALTER TABLE `verification_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-05-30 21:59:17
