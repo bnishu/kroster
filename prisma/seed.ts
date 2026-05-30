@@ -356,7 +356,7 @@ async function main() {
     }
 
     const existing = await prisma.member.findUnique({ where: { slug } })
-    const emailToSet = existing && existing.email && !existing.email.endsWith('@bnikrypton.com')
+    const emailToSet = existing && existing.email
       ? existing.email
       : (slug + '@bnikrypton.com')
     const profileImageToSet = existing && existing.profileImage 
