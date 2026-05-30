@@ -1,0 +1,16 @@
+# ── HOSTINGER PRODUCTION ENV ──
+# Upload this file to your Hostinger server and rename it exactly to ".env"
+
+DATABASE_URL="mysql://u881024201_krypto:4W5r%2AneLgg%24rfYN@localhost:3306/u881024201_kroster?sslMode=DISABLED"
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=u881024201_krypto
+DB_PASS="4W5r*neLgg$rfYN"
+DB_NAME=u881024201_kroster
+
+# Keep your existing auth secret
+AUTH_SECRET="fL6Z4Xb1kE9Jt8vQ3wA7yN2mC5pU0hR4oY9sB7vF2lI="
+
+# App URL for production
+NEXT_PUBLIC_APP_URL="https://your-domain.com"
